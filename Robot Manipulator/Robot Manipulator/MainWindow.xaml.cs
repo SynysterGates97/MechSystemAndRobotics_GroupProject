@@ -81,5 +81,24 @@ namespace Robot_Manipulator
         {
 
         }
+
+        const double ScaleRate = 1.1;
+        private void CanvasMain_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+
+            Canvas c = sender as Canvas;
+            ScaleTransform st = new ScaleTransform();
+            c.RenderTransform = st;
+            if (e.Delta > 0)
+            {
+                st.ScaleX *= ScaleRate;
+                st.ScaleY *= ScaleRate;
+            }
+            else
+            {
+                st.ScaleX /= ScaleRate;
+                st.ScaleY /= ScaleRate;
+            }
+        }
     }
 }

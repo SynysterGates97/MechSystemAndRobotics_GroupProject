@@ -14,7 +14,7 @@
         <Grid Grid.Column="1">
             <GroupBox x:Name="groupBox" Header="Меню" Margin="10,0,10,10"/>
         </Grid>
-        <Canvas  x:Name="canvasMain" Margin="10,10,10,10" Background="LightGray" MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown" MouseRightButtonDown="CanvasMain_MouseRightButtonDown"/>
+        <Canvas  x:Name="canvasMain" Margin="10,10,10,10" Background="LightGray" MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown" MouseRightButtonDown="CanvasMain_MouseRightButtonDown" MouseWheel="CanvasMain_MouseWheel"/>
 
     </Grid>
 </Window>
