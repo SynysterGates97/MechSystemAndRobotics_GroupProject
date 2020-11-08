@@ -27,36 +27,28 @@ namespace Robot_Manipulator
 
         private void CanvasMain_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            Bar bar = new Bar();
+
+            Point currentPosition = Mouse.GetPosition(canvasMain);
+
+            bar.InitPoint = Mouse.GetPosition(canvasMain);
+ 
+            bar.EndPoint = currentPosition;
+            bar.EndPoint = new Point(currentPosition.X + 50, currentPosition.Y);
+
+            bar.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+            bar.StrokeThickness = 10;
+
             SolidColorBrush solidColorBrush = new SolidColorBrush(Color.FromRgb(100, 100, 100));
 
-            //Rectangle newRec = new Rectangle
-            //{
-            //    Width = 50,
-            //    Height = 50,
-            //    StrokeThickness = 3,
-            //    Fill = solidColorBrush,
-            //    Stroke = Brushes.Black
-            //    };
+            //Polyline polyline = new Polyline();
 
-            //// once the rectangle is set we need to give a X and Y position for the new object
-            //// we will calculate the mouse click location and add it there
-            //Canvas.SetLeft(newRec, Mouse.GetPosition(canvasMain).X); // set the left position of rectangle to mouse X
-            //Canvas.SetTop(newRec, Mouse.GetPosition(canvasMain).Y); // set the top position of rectangle to mouse Y
+            //polyline.Points.Add(new Point(0, 0));
+            //polyline.Points.Add(new Point(0, 1));
+            //polyline.Points.Add(new Point(1, 0));
+            //polyline.Points.Add(new Point(1, 1));
 
-            //canvasMain.Children.Add(newRec); // add the new rectangle to the canvas
-
-            //Line line = new Line
-            //{
-            //    Width = 50,
-            //    Stroke = Brushes.Black,
-            //    StrokeThickness = 3,
-            //    X1 = Mouse.GetPosition(canvasMain).X,
-            //    X2 = Mouse.GetPosition(canvasMain).X + 40,
-            //    Y1 = Mouse.GetPosition(canvasMain).Y,
-            //    Y2 = Mouse.GetPosition(canvasMain).Y + 40,
-
-            //};
-
+           
             Line myLine = new Line();
             myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
             myLine.X1 = Mouse.GetPosition(canvasMain).X;
@@ -66,20 +58,13 @@ namespace Robot_Manipulator
             //myLine.HorizontalAlignment = HorizontalAlignment.Left;
             //myLine.VerticalAlignment = VerticalAlignment.Center;
             myLine.StrokeThickness = 10;
-            canvasMain.Children.Add(myLine);
+            canvasMain.Children.Add(bar);
 
-            //line.HorizontalAlignment = HorizontalAlignment.Left;
-            //line.VerticalAlignment = VerticalAlignment.Center;
-
-            //Canvas.SetLeft(line, Mouse.GetPosition(canvasMain).X); // set the left position of rectangle to mouse X
-            //Canvas.SetTop(line, Mouse.GetPosition(canvasMain).Y); // set the top position of rectangle to mouse Y
-
-            //canvasMain.Children.Add(line); // add the new rectangle to the canvas
         }
 
         private void CanvasMain_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-
+            MessageBox.Show(e.OriginalSource.ToString());
         }
 
         const double ScaleRate = 1.1;

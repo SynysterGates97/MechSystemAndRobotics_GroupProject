@@ -7,14 +7,31 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50.005"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="117*"/>
             <ColumnDefinition Width="43*"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="1">
-            <GroupBox x:Name="groupBox" Header="Меню" Margin="10,0,10,10"/>
+        <Grid Grid.Column="1" Grid.RowSpan="2">
+            <GroupBox x:Name="groupBox" Header="Меню" Margin="10,54,10,10"/>
         </Grid>
-        <Canvas  x:Name="canvasMain" Margin="10,10,10,10" Background="LightGray" MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown" MouseRightButtonDown="CanvasMain_MouseRightButtonDown" MouseWheel="CanvasMain_MouseWheel"/>
+        <Canvas  x:Name="canvasMain" Margin="10,5,10,10" Background="LightGray" MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown" MouseRightButtonDown="CanvasMain_MouseRightButtonDown" MouseWheel="CanvasMain_MouseWheel" Grid.Row="1"/>
+        <Menu x:Name="menu" Margin="10,10,10,10" Grid.ColumnSpan="2">
+            <MenuItem Header="File">
+                <MenuItem Header="New Project" ></MenuItem>
+                <MenuItem Header="Open Project" >
+                    <MenuItem Header="WinForms"></MenuItem>
+                    <MenuItem Header="WPF" ></MenuItem>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Exit" ></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Edit" ></MenuItem>
+            <MenuItem Header="View" Height="29" Width="44" ></MenuItem>
+        </Menu>
 
     </Grid>
 </Window>
