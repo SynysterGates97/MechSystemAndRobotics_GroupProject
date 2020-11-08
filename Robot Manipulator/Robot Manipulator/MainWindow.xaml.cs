@@ -31,35 +31,38 @@ namespace Robot_Manipulator
 
             Point currentPosition = Mouse.GetPosition(canvasMain);
 
-            bar.InitPoint = Mouse.GetPosition(canvasMain);
- 
-            bar.EndPoint = currentPosition;
-            bar.EndPoint = new Point(currentPosition.X + 50, currentPosition.Y);
+            bar.Begin = Mouse.GetPosition(canvasMain);
 
-            bar.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
-            bar.StrokeThickness = 10;
+            try
+            {
+                var testAngle = System.Convert.ToDouble(textBoxTestAngle.Text);
+                var testLength = System.Convert.ToDouble(textBoxTestLength.Text);
 
-            SolidColorBrush solidColorBrush = new SolidColorBrush(Color.FromRgb(100, 100, 100));
 
-            //Polyline polyline = new Polyline();
+                bar.Length = testLength;
 
-            //polyline.Points.Add(new Point(0, 0));
-            //polyline.Points.Add(new Point(0, 1));
-            //polyline.Points.Add(new Point(1, 0));
-            //polyline.Points.Add(new Point(1, 1));
+                bar.Angle = testAngle * (Math.PI / 180);
 
-           
-            Line myLine = new Line();
-            myLine.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
-            myLine.X1 = Mouse.GetPosition(canvasMain).X;
-            myLine.X2 = Mouse.GetPosition(canvasMain).X + 50;
-            myLine.Y1 = Mouse.GetPosition(canvasMain).Y;
-            myLine.Y2 = Mouse.GetPosition(canvasMain).Y + 50;
-            //myLine.HorizontalAlignment = HorizontalAlignment.Left;
-            //myLine.VerticalAlignment = VerticalAlignment.Center;
-            myLine.StrokeThickness = 10;
-            canvasMain.Children.Add(bar);
+                SolidColorBrush solidColorBrush = new SolidColorBrush(Color.FromRgb(100, 100, 100));
 
+                #region Возможно поможет при рисовании точки
+                //Polyline polyline = new Polyline();
+
+                //polyline.Points.Add(new Point(0, 0));
+                //polyline.Points.Add(new Point(0, 1));
+                //polyline.Points.Add(new Point(1, 0));
+                //polyline.Points.Add(new Point(1, 1));
+                #endregion
+
+                //myLine.HorizontalAlignment = HorizontalAlignment.Left;
+                //myLine.VerticalAlignment = VerticalAlignment.Center;
+
+                canvasMain.Children.Add(bar);
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("No test values!");
+            }
         }
 
         private void CanvasMain_MouseRightButtonDown(object sender, MouseButtonEventArgs e)

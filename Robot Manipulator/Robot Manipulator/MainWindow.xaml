@@ -15,8 +15,10 @@
             <ColumnDefinition Width="117*"/>
             <ColumnDefinition Width="43*"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="1" Grid.RowSpan="2">
-            <GroupBox x:Name="groupBox" Header="Меню" Margin="10,54,10,10"/>
+        <Grid Grid.Column="1" Grid.RowSpan="2" Height="434" VerticalAlignment="Top">
+            <GroupBox x:Name="groupBox" Header="Меню" Margin="10,54,10,90"/>
+            <TextBox x:Name="textBoxTestAngle" HorizontalAlignment="Left" Margin="10,361,0,0" Text="TestAngle" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="textBoxTestLength" HorizontalAlignment="Left" Margin="10,384,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         </Grid>
         <Canvas  x:Name="canvasMain" Margin="10,5,10,10" Background="LightGray" MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown" MouseRightButtonDown="CanvasMain_MouseRightButtonDown" MouseWheel="CanvasMain_MouseWheel" Grid.Row="1"/>
         <Menu x:Name="menu" Margin="10,10,10,10" Grid.ColumnSpan="2">
