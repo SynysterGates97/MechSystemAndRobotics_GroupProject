@@ -18,33 +18,6 @@ namespace Robot_Manipulator
 
         private LineGeometry _line = new LineGeometry();
 
-        private bool _AngleIsCycled(double angle)
-        {
-            if (Math.Abs(angle) > 2 * Math.PI)
-                return true;
-            return false;
-                
-        }
-
-        private double ConvertAngleToWpfAngle(double angleInLabCoordinates)
-        {
-            //сдвиг на 180 градусов. Так как Ywpf = - Ylab
-            angleInLabCoordinates = angleInLabCoordinates - Math.PI / 2;
-
-            NormalizeAngle(ref angleInLabCoordinates);
-
-            return angleInLabCoordinates;
-        }
-
-        private void NormalizeAngle(ref double angle)
-        {
-            if(_AngleIsCycled(angle))
-            {
-                int cyclesCount = (int)(angle % (2 * Math.PI));
-                angle /= cyclesCount;
-            }
-        }
-
         public Point Begin
         {
             set
@@ -85,16 +58,6 @@ namespace Robot_Manipulator
             }
         }
 
-
-        //private double X1 { get; set; }
-        //private double Y1 { get; set; }
-        //private double X2 { get; set; }
-        //private double Y2 { get; set; }
-        //private double _X1;
-        //private double _Y1;
-        //private double _X2;
-        //private double _Y2;
-
         private Point _begPoint = new Point(0,0);
         private Point _endPoint = new Point(0,0);
 
@@ -103,6 +66,35 @@ namespace Robot_Manipulator
             Stroke = System.Windows.Media.Brushes.LightSteelBlue;
             StrokeThickness = 10;
         }
+
+        private bool _AngleIsCycled(double angle)
+        {
+            if (Math.Abs(angle) > 2 * Math.PI)
+                return true;
+            return false;
+
+        }
+
+        private double ConvertAngleToWpfAngle(double angleInLabCoordinates)
+        {
+            //сдвиг на 180 градусов. Так как Ywpf = - Ylab
+            angleInLabCoordinates *= -1;
+
+            NormalizeAngle(ref angleInLabCoordinates);
+
+            return angleInLabCoordinates;
+        }
+
+        private void NormalizeAngle(ref double angle)
+        {
+            if (_AngleIsCycled(angle))
+            {
+
+                int cyclesCount = (int)(Math.Abs(angle) % (2 * Math.PI)) + 1;
+                angle /= cyclesCount;
+            }
+        }
+
 
         protected override Geometry DefiningGeometry
         {
