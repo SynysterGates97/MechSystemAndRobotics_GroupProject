@@ -13,7 +13,7 @@ namespace Robot_Manipulator
     
     class Manipulator : INotifyPropertyChanged
     {
-        ObservableCollection<Link> links;
+        public ObservableCollection<Link> links;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -22,7 +22,7 @@ namespace Robot_Manipulator
 
         //TODO: Нужно как-то высчитывать начальную точку, или подгонять полотно под нее
         //Это пока в рамках быстрого прототипа
-        Point firstLinkBeginPoint = new Point(x: 200, y: 200);
+        Point firstLinkBeginPoint = new Point(x: 200, y: 700);
 
 
         public bool UpdateLinksAfterChanges()
@@ -30,9 +30,9 @@ namespace Robot_Manipulator
             bool islinksUpdated = false;
             for(int i = 1; i < links.Count(); i++)
             {
-                if(links[i-1].EndPoint != links[i - 1].BeginPoint)
+                if(links[i-1].EndPoint != links[1].BeginPoint)
                 {
-                    links[i - 1].BeginPoint = links[i - 1].EndPoint;
+                    links[i].BeginPoint = links[i - 1].EndPoint;
                     islinksUpdated = true;
                 }
             }
@@ -57,17 +57,21 @@ namespace Robot_Manipulator
             Link newLink = new Link(newLinkBeginPoint);
 
             links.Add(newLink);
+
+            OnPropertyChanged("AddLink");
         }
 
         public bool DeleteLink()
         {
+            bool result = false;
             //Нельзя удалить начальный элемент
             if (links.Count > 1)
             {
                 Link lastLink = links.Last();
-                return links.Remove(lastLink);
+                OnPropertyChanged("DeleteLink");
+                result = links.Remove(lastLink);
             }
-            return false;
+            return result;
 
         }
 
@@ -81,7 +85,7 @@ namespace Robot_Manipulator
                 links[selectedLinkIndex].Length = newLength;
 
                 UpdateLinksAfterChanges();
-
+                OnPropertyChanged("ChangeLink");
                 return true;
             }
             return false;

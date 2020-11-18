@@ -20,8 +20,23 @@
             <TextBox x:Name="textBoxTestAngle" HorizontalAlignment="Left" Margin="10,361,0,0" Text="30" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
             <TextBox x:Name="textBoxTestLength" HorizontalAlignment="Left" Margin="10,384,0,0" Text="100" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
             <Label x:Name="label" Content="Angle" HorizontalAlignment="Left" Margin="135,349,0,0" VerticalAlignment="Top" Height="34"/>
+            <Button x:Name="buttonAddLink" Content="Add" HorizontalAlignment="Left" Margin="155,378,0,0" VerticalAlignment="Top" Click="buttonAddLink_Click"/>
+            <Button x:Name="buttonDeleteLink" Content="del" HorizontalAlignment="Left" Margin="155,403,0,0" VerticalAlignment="Top" Width="26" Click="buttonDeleteLink_Click"/>
         </Grid>
-        <Canvas  x:Name="canvasMain" Margin="10,5,10,10" Background="LightGray" MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown" MouseRightButtonDown="CanvasMain_MouseRightButtonDown" MouseWheel="CanvasMain_MouseWheel" Grid.Row="1"/>
+        <Canvas  x:Name="canvasMain"  Margin="10,5,10,10" Background="LightGray" MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown" MouseRightButtonDown="CanvasMain_MouseRightButtonDown" MouseWheel="CanvasMain_MouseWheel" Grid.Row="1">
+            <Canvas.Children>
+            </Canvas.Children>
+        </Canvas>
+
+
+
+        <ItemsControl ItemsSource="{Binding }">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
         <Menu x:Name="menu" Margin="10,10,10,10" Grid.ColumnSpan="2">
             <MenuItem Header="File">
                 <MenuItem Header="New Project" ></MenuItem>
