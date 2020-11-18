@@ -20,6 +20,7 @@ namespace Robot_Manipulator
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         public MainWindow()
         {
             InitializeComponent();

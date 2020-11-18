@@ -25,6 +25,20 @@ namespace Robot_Manipulator
         Point firstLinkBeginPoint = new Point(x: 200, y: 200);
 
 
+        public bool UpdateLinksAfterChanges()
+        {
+            bool islinksUpdated = false;
+            for(int i = 1; i < links.Count(); i++)
+            {
+                if(links[i-1].EndPoint != links[i - 1].BeginPoint)
+                {
+                    links[i - 1].BeginPoint = links[i - 1].EndPoint;
+                    islinksUpdated = true;
+                }
+            }
+            return islinksUpdated;
+
+        }
         public Manipulator()
         {
             links = new ObservableCollection<Link>();
@@ -55,6 +69,22 @@ namespace Robot_Manipulator
             }
             return false;
 
+        }
+
+        public bool ChangeLink(ref Link selectedLink, double newAngle, double newLength)
+        {
+            int selectedLinkIndex = links.IndexOf(selectedLink);
+            if (selectedLinkIndex > 0)
+            {
+
+                links[selectedLinkIndex].Angle = newAngle;
+                links[selectedLinkIndex].Length = newLength;
+
+                UpdateLinksAfterChanges();
+
+                return true;
+            }
+            return false;
         }
 
         protected void OnPropertyChanged(string name = null)
