@@ -27,7 +27,7 @@ namespace Robot_Manipulator
 
         private void CanvasMain_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Bar bar = new Bar();
+            Link bar = new Link();
 
             Point currentPosition = Mouse.GetPosition(canvasMain);
 
@@ -67,7 +67,19 @@ namespace Robot_Manipulator
 
         private void CanvasMain_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show(e.OriginalSource.ToString());
+            try
+            {
+                Link selectedBar = (Link)e.OriginalSource;
+                selectedBar.Stroke = System.Windows.Media.Brushes.Black;                
+            }
+            catch(Exception)
+            {
+
+            }
+            finally
+            {
+                MessageBox.Show(e.OriginalSource.ToString());
+            }
         }
 
         const double ScaleRate = 1.1;
