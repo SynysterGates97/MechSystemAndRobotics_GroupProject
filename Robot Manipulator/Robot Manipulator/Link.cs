@@ -13,16 +13,23 @@ namespace Robot_Manipulator
     //И угол
     class Link : Shape
     {
-        double _lenght = -1;
-        double _angle = 0;
+        double _lenght = 100;
+        double _angle = 90;
 
         private LineGeometry _line = new LineGeometry();
 
-        public Point Begin
+        private Point _begPoint = new Point(0, 0);
+        private Point _endPoint = new Point(0, 0);
+
+        const double defaultAngle = 90 * (Math.PI / 180);
+        const double defaultLenght = 20;
+
+        public Point BeginPoint
         {
             set
             {
                 _begPoint = value;
+                RecalculateEndPoint();
             }
             get
             {
@@ -34,8 +41,7 @@ namespace Robot_Manipulator
         {
             set
             {
-                if (value > 0)
-                    _lenght = value;
+                _lenght = value;
             }
             get
             {
@@ -51,6 +57,8 @@ namespace Robot_Manipulator
                 //TODO: Сделать приравнивание угла к < 360;
                 NormalizeAngle(ref value);
                 _angle = value;
+
+                RecalculateEndPoint();
             }
             get
             {
@@ -58,11 +66,27 @@ namespace Robot_Manipulator
             }
         }
 
-        private Point _begPoint = new Point(0,0);
-        private Point _endPoint = new Point(0,0);
+        public Point EndPoint
+        {
+            get
+            {
+                return _endPoint;
+            }
+        }
+        
+        public Link(Point begin, double angleInRad = defaultAngle, double length = defaultLenght)
+        {
+            BeginPoint = begin;
+            Angle = angleInRad;
+            Length = length;
+
+            Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+            StrokeThickness = 10;
+        }
 
         public Link()
         {
+            
             Stroke = System.Windows.Media.Brushes.LightSteelBlue;
             StrokeThickness = 10;
         }
@@ -95,16 +119,22 @@ namespace Robot_Manipulator
             }
         }
 
+        private void RecalculateEndPoint()
+        {
+            double convertedToWpfCoordAngle = ConvertAngleToWpfAngle(Angle);
+            _endPoint.X = BeginPoint.X + Length * Math.Cos(convertedToWpfCoordAngle);
+            _endPoint.Y = BeginPoint.Y + Length * Math.Sin(convertedToWpfCoordAngle);
+        }
 
         protected override Geometry DefiningGeometry
         {
             get
             {
-                _line.StartPoint = Begin;
+                _line.StartPoint = BeginPoint;
 
-                double angleInWpf = ConvertAngleToWpfAngle(Angle);
-                _endPoint.X = Begin.X + Length * Math.Cos(angleInWpf);
-                _endPoint.Y = Begin.Y + Length * Math.Sin(angleInWpf);
+                //double angleInWpf = ConvertAngleToWpfAngle(Angle);
+                //_endPoint.X = Begin.X + Length * Math.Cos(angleInWpf);
+                //_endPoint.Y = Begin.Y + Length * Math.Sin(angleInWpf);
 
                 _line.EndPoint = _endPoint;
 

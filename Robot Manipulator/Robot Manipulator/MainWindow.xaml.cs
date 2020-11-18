@@ -31,7 +31,7 @@ namespace Robot_Manipulator
 
             Point currentPosition = Mouse.GetPosition(canvasMain);
 
-            bar.Begin = Mouse.GetPosition(canvasMain);
+            bar.BeginPoint = Mouse.GetPosition(canvasMain);
 
             try
             {
