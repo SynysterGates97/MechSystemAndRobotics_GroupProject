@@ -63,15 +63,18 @@ namespace Robot_Manipulator
 
         public bool DeleteLink()
         {
-            bool result = false;
             //Нельзя удалить начальный элемент
             if (links.Count > 1)
             {
                 Link lastLink = links.Last();
-                OnPropertyChanged("DeleteLink");
-                result = links.Remove(lastLink);
+                
+                if(links.Remove(lastLink))
+                {
+                    OnPropertyChanged("DeleteLink");
+                    return true;
+                }
             }
-            return result;
+            return false;
 
         }
 

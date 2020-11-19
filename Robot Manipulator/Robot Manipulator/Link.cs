@@ -13,8 +13,8 @@ namespace Robot_Manipulator
     //И угол
     class Link : Shape
     {
-        double _lenght = 100;
-        double _angle = 90;
+        double _length = 0;
+        double _angle = 0;
 
         private LineGeometry _line = new LineGeometry();
 
@@ -22,7 +22,24 @@ namespace Robot_Manipulator
         private Point _endPoint = new Point(0, 0);
 
         const double defaultAngle = 90 * (Math.PI / 180);
-        const double defaultLenght = 20;
+        const double defaultLenght = 100;
+
+        public Link(Point begin, double angleInRad = defaultAngle, double length = defaultLenght)
+        {
+            BeginPoint = begin;
+            Angle = angleInRad;
+            Length = length;
+
+            Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+            StrokeThickness = 10;
+        }
+
+        public Link()
+        {
+
+            Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+            StrokeThickness = 10;
+        }
 
         public Point BeginPoint
         {
@@ -41,11 +58,12 @@ namespace Robot_Manipulator
         {
             set
             {
-                _lenght = value;
+                _length = value;
+                RecalculateEndPoint();
             }
             get
             {
-                return _lenght;
+                return _length;
             }
         }
 
@@ -74,23 +92,6 @@ namespace Robot_Manipulator
             }
         }
         
-        public Link(Point begin, double angleInRad = defaultAngle, double length = defaultLenght)
-        {
-            BeginPoint = begin;
-            Angle = angleInRad;
-            Length = length;
-
-            Stroke = System.Windows.Media.Brushes.LightSteelBlue;
-            StrokeThickness = 10;
-        }
-
-        public Link()
-        {
-            
-            Stroke = System.Windows.Media.Brushes.LightSteelBlue;
-            StrokeThickness = 10;
-        }
-
         private bool _AngleIsCycled(double angle)
         {
             if (Math.Abs(angle) > 2 * Math.PI)
