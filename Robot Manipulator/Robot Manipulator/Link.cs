@@ -99,8 +99,8 @@ namespace Robot_Manipulator
 
         private void RecalculateAngleAndLengthViaEndPoint(Point value)
         {
-            double lengthProjectionX = Math.Abs(value.X - BeginPoint.X);
-            double lengthProjectionY = Math.Abs(value.Y - BeginPoint.Y);
+            double lengthProjectionX = value.X - BeginPoint.X;
+            double lengthProjectionY = value.Y - BeginPoint.Y;
 
             double newLength = Math.Sqrt(
                 Math.Pow(lengthProjectionX, 2) +
@@ -108,10 +108,14 @@ namespace Robot_Manipulator
                 );
 
 
-            double newAngle = Math.Acos(lengthProjectionX / newLength);
-            NormalizeAngle(ref newAngle);
+            double newAngleRad = Math.Acos(lengthProjectionX / newLength);
+            if (lengthProjectionY > 0)
+                newAngleRad *= -1;
 
-            Angle = newAngle;
+            double newAngleGrad = newAngleRad * 180 / Math.PI;
+            NormalizeAngle(ref newAngleRad);
+
+            Angle = newAngleRad;
             Length = newLength;
         }
 
