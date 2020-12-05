@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,14 +29,47 @@ namespace Robot_Manipulator
             manipulator = new Manipulator();
             ReRenderCanvas(ref canvasMain);
             manipulator.PropertyChanged += Manipulator_PropertyChanged;
+            canvasMain.MouseMove += CanvasMain_MouseMove;
 
         }
 
+        private void CanvasMain_MouseMove(object sender, MouseEventArgs e)
+        {
+            if(e.LeftButton == MouseButtonState.Pressed)
+            {
+
+            }
+        }
+
+        private void CanvasMain_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            MessageBox.Show("wefe");
+        }
 
         private void Manipulator_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             ReRenderCanvas(ref canvasMain);
         }
+
+        static CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+        CancellationToken token = cancelTokenSource.Token;
+
+        Task renderTask;
+        public void RenderTaskFunction()
+        {
+            while(true)
+            {
+                if (token.IsCancellationRequested)
+                {
+                    MessageBox.Show("RenderOver");
+                }
+                ReRenderCanvas(ref canvasMain);
+                Task.Delay(30);
+            }
+
+        }
+        
+
 
 
         //Если не будет привязки придется дергать её1
@@ -113,6 +147,11 @@ namespace Robot_Manipulator
         {
             manipulator.DeleteLink();
             //ReRenderCanvas(ref canvasMain);
+        }
+
+        private void canvasMain_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            cancelTokenSource.Cancel();
         }
     }
 }
