@@ -86,12 +86,35 @@ namespace Robot_Manipulator
 
         public Point EndPoint
         {
+            set
+            {
+                 _endPoint = value;
+                RecalculateAngleAndLengthViaEndPoint(value);
+            }
             get
             {
                 return _endPoint;
             }
         }
-        
+
+        private void RecalculateAngleAndLengthViaEndPoint(Point value)
+        {
+            double lengthProjectionX = Math.Abs(value.X - BeginPoint.X);
+            double lengthProjectionY = Math.Abs(value.Y - BeginPoint.Y);
+
+            double newLength = Math.Sqrt(
+                Math.Pow(lengthProjectionX, 2) +
+                Math.Pow(lengthProjectionY, 2)
+                );
+
+
+            double newAngle = Math.Acos(lengthProjectionX / newLength);
+            NormalizeAngle(ref newAngle);
+
+            Angle = newAngle;
+            Length = newLength;
+        }
+
         private bool _AngleIsCycled(double angle)
         {
             if (Math.Abs(angle) > 2 * Math.PI)

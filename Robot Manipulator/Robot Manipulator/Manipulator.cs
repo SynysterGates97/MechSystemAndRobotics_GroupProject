@@ -124,6 +124,14 @@ namespace Robot_Manipulator
             }
             return false;
         }
+        public void ChangeSelectedLinkViaNewEndPoint(Point newEnd)
+        {
+
+            SelectedItem.EndPoint = newEnd;
+
+            UpdateLinksAfterChanges();
+            OnPropertyChanged("ChangeLinkViaEndPoint");
+        }
 
         protected void OnPropertyChanged(string name = null)
         {

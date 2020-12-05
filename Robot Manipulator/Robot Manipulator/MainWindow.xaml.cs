@@ -49,51 +49,25 @@ namespace Robot_Manipulator
 
         private void CanvasMain_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Link bar = new Link();
 
-            Point currentPosition = Mouse.GetPosition(canvasMain);
+            //Link selectedBar = (Link)e.OriginalSource; //СРавнивая с этим можно будет узнаеть есть ли пересечение.
 
-            bar.BeginPoint = Mouse.GetPosition(canvasMain);
-
-            try
+            if(manipulator.SelectedItem != null)
             {
-                var testAngle = System.Convert.ToDouble(textBoxTestAngle.Text);
-                var testLength = System.Convert.ToDouble(textBoxTestLength.Text);
-
-
-                bar.Length = testLength;
-
-                bar.Angle = testAngle * (Math.PI / 180);
-
-                SolidColorBrush solidColorBrush = new SolidColorBrush(Color.FromRgb(100, 100, 100));
-
-                #region Возможно поможет при рисовании точки
-                //Polyline polyline = new Polyline();
-
-                //polyline.Points.Add(new Point(0, 0));
-                //polyline.Points.Add(new Point(0, 1));
-                //polyline.Points.Add(new Point(1, 0));
-                //polyline.Points.Add(new Point(1, 1));
-                #endregion
-
-                //myLine.HorizontalAlignment = HorizontalAlignment.Left;
-                //myLine.VerticalAlignment = VerticalAlignment.Center;
-
-                canvasMain.Children.Add(bar);
+                Point currentPosition = Mouse.GetPosition(canvasMain);
+                manipulator.ChangeSelectedLinkViaNewEndPoint(currentPosition);
             }
-            catch(Exception)
-            {
-                MessageBox.Show("No test values!");
-            }
+            
+
+
+
+
         }
 
         private void CanvasMain_MouseRightButtonDown_SelectLink(object sender, MouseButtonEventArgs e)
         {
             try
             {
-                //var testAngle = System.Convert.ToDouble(textBoxTestAngle.Text) * (Math.PI / 180);
-                //var testLength = System.Convert.ToDouble(textBoxTestLength.Text);
-
                 Link selectedBar = (Link)e.OriginalSource;
 
                 //manipulator.ChangeLink(ref selectedBar, testAngle, testLength);
