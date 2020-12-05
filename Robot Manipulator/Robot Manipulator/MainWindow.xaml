@@ -23,7 +23,7 @@
             <Button x:Name="buttonAddLink" Content="Add" HorizontalAlignment="Left" Margin="155,378,0,0" VerticalAlignment="Top" Click="buttonAddLink_Click"/>
             <Button x:Name="buttonDeleteLink" Content="del" HorizontalAlignment="Left" Margin="155,403,0,0" VerticalAlignment="Top" Width="26" Click="buttonDeleteLink_Click"/>
         </Grid>
-        <Canvas  x:Name="canvasMain"  Margin="10,5,10,10" Background="LightGray" MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown" MouseRightButtonDown="CanvasMain_MouseRightButtonDown" MouseWheel="CanvasMain_MouseWheel" Grid.Row="1">
+        <Canvas  x:Name="canvasMain"  Margin="10,5,10,10" Background="LightGray" MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown" MouseRightButtonDown="CanvasMain_MouseRightButtonDown_SelectLink" MouseWheel="CanvasMain_MouseWheel" Grid.Row="1">
             <Canvas.Children>
             </Canvas.Children>
         </Canvas>

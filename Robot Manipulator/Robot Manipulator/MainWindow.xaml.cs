@@ -21,19 +21,21 @@ namespace Robot_Manipulator
     public partial class MainWindow : Window
     {
         Manipulator manipulator;
+
         public MainWindow()
         {
             InitializeComponent();
             manipulator = new Manipulator();
             ReRenderCanvas(ref canvasMain);
             manipulator.PropertyChanged += Manipulator_PropertyChanged;
+
         }
+
 
         private void Manipulator_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             ReRenderCanvas(ref canvasMain);
         }
-
 
 
         //Если не будет привязки придется дергать её1
@@ -85,18 +87,18 @@ namespace Robot_Manipulator
             }
         }
 
-        private void CanvasMain_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void CanvasMain_MouseRightButtonDown_SelectLink(object sender, MouseButtonEventArgs e)
         {
             try
             {
-                var testAngle = System.Convert.ToDouble(textBoxTestAngle.Text) * (Math.PI / 180);
-                var testLength = System.Convert.ToDouble(textBoxTestLength.Text);
+                //var testAngle = System.Convert.ToDouble(textBoxTestAngle.Text) * (Math.PI / 180);
+                //var testLength = System.Convert.ToDouble(textBoxTestLength.Text);
 
                 Link selectedBar = (Link)e.OriginalSource;
 
-                manipulator.ChangeLink(ref selectedBar, testAngle, testLength);
+                //manipulator.ChangeLink(ref selectedBar, testAngle, testLength);
 
-                selectedBar.Stroke = System.Windows.Media.Brushes.Black;                
+                manipulator.SelectedItem = selectedBar;           
             }
             catch(Exception)
             {
@@ -104,7 +106,7 @@ namespace Robot_Manipulator
             }
             finally
             {
-                MessageBox.Show(e.OriginalSource.ToString());
+                //MessageBox.Show(e.OriginalSource.ToString());
             }
         }
 

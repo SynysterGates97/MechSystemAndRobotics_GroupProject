@@ -30,14 +30,14 @@ namespace Robot_Manipulator
             Angle = angleInRad;
             Length = length;
 
-            Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+            Stroke = System.Windows.Media.Brushes.Blue; ;
             StrokeThickness = 10;
         }
 
         public Link()
         {
 
-            Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+            Stroke = System.Windows.Media.Brushes.Blue; ;
             StrokeThickness = 10;
         }
 
