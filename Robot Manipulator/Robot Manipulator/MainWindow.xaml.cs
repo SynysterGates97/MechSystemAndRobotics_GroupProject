@@ -36,7 +36,7 @@ namespace Robot_Manipulator
             manipulator = new Manipulator();
             ReRenderCanvas(ref canvasMain);
             manipulator.PropertyChanged += Manipulator_PropertyChanged;
-            canvasMain.MouseMove += CanvasMain_MouseMove;
+            canvasMain.MouseMove += CanvasMain_MouseMove_renderActive;
             renderingTimer.Tick += RenderingTimer_Tick;
             renderingTimer.Start();
 
@@ -48,7 +48,7 @@ namespace Robot_Manipulator
         }
 
         static int counter = 0;
-        private void CanvasMain_MouseMove(object sender, MouseEventArgs e)
+        private void CanvasMain_MouseMove_renderActive(object sender, MouseEventArgs e)
         {
             if(e.LeftButton == MouseButtonState.Pressed)
             {
@@ -64,24 +64,7 @@ namespace Robot_Manipulator
         {
             ReRenderCanvas(ref canvasMain);
         }
-
-        public void RenderTaskFunction()
-        {
-            while(true)
-            {
-                if (token.IsCancellationRequested)
-                {
-                    //MessageBox.Show("RenderOver");
-                    return;
-                }
-                ReRenderCanvas(ref canvasMain);
-                Task.Delay(30);
-            }
-
-        }
-        
-
-
+     
 
         //Если не будет привязки придется дергать её1
         public void ReRenderCanvas(ref Canvas canvas)
@@ -92,7 +75,7 @@ namespace Robot_Manipulator
                 canvasMain.Children.Add(manipulator.links[i]);
         }
 
-        private async void CanvasMain_MouseLeftButtonDown_BeginLinkManipulation(object sender, MouseButtonEventArgs e)
+        private void CanvasMain_MouseLeftButtonDown_BeginLinkManipulation(object sender, MouseButtonEventArgs e)
         {
 
             //Link selectedBar = (Link)e.OriginalSource; //СРавнивая с этим можно будет узнаеть есть ли пересечение.
@@ -101,8 +84,6 @@ namespace Robot_Manipulator
             {
                 Point currentPosition = Mouse.GetPosition(canvasMain);
                 manipulator.ChangeSelectedLinkViaNewEndPoint(currentPosition);
-
-                //Dispatcher.Invoke((Action)(() => RenderTaskFunction()));
             }
         }
 

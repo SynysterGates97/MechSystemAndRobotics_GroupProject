@@ -154,19 +154,26 @@ namespace Robot_Manipulator
             _endPoint.Y = BeginPoint.Y + Length * Math.Sin(convertedToWpfCoordAngle);
         }
 
+        private Geometry GenerateMyWeirdGeometry()
+        {
+            StreamGeometry geom = new StreamGeometry();
+            using (StreamGeometryContext gc = geom.Open())
+            {
+                _line.StartPoint = BeginPoint;
+                _line.EndPoint = _endPoint;
+
+                gc.BeginFigure(BeginPoint, false, true);
+                gc.LineTo(_endPoint, true, true);
+            }
+
+            return geom;
+        }
+
         protected override Geometry DefiningGeometry
         {
             get
             {
-                _line.StartPoint = BeginPoint;
-
-                //double angleInWpf = ConvertAngleToWpfAngle(Angle);
-                //_endPoint.X = Begin.X + Length * Math.Cos(angleInWpf);
-                //_endPoint.Y = Begin.Y + Length * Math.Sin(angleInWpf);
-
-                _line.EndPoint = _endPoint;
-
-                return _line;
+                return GenerateMyWeirdGeometry();
             }
         }
     }
