@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Robot_Manipulator
 {
@@ -23,6 +24,12 @@ namespace Robot_Manipulator
     {
         Manipulator manipulator;
 
+        static CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+
+        CancellationToken token = cancelTokenSource.Token;
+
+        DispatcherTimer renderingTimer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 30) };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -30,20 +37,27 @@ namespace Robot_Manipulator
             ReRenderCanvas(ref canvasMain);
             manipulator.PropertyChanged += Manipulator_PropertyChanged;
             canvasMain.MouseMove += CanvasMain_MouseMove;
+            renderingTimer.Tick += RenderingTimer_Tick;
+            renderingTimer.Start();
 
         }
 
+        private void RenderingTimer_Tick(object sender, EventArgs e)
+        {
+            ReRenderCanvas(ref canvasMain);
+        }
+
+        static int counter = 0;
         private void CanvasMain_MouseMove(object sender, MouseEventArgs e)
         {
             if(e.LeftButton == MouseButtonState.Pressed)
             {
+                Point currentPosition = Mouse.GetPosition(canvasMain);
+                manipulator.ChangeSelectedLinkViaNewEndPoint(currentPosition);
 
+                textBoxTestAngle.Text = counter++.ToString();
+                
             }
-        }
-
-        private void CanvasMain_PreviewMouseMove(object sender, MouseEventArgs e)
-        {
-            MessageBox.Show("wefe");
         }
 
         private void Manipulator_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -51,17 +65,14 @@ namespace Robot_Manipulator
             ReRenderCanvas(ref canvasMain);
         }
 
-        static CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
-        CancellationToken token = cancelTokenSource.Token;
-
-        Task renderTask;
         public void RenderTaskFunction()
         {
             while(true)
             {
                 if (token.IsCancellationRequested)
                 {
-                    MessageBox.Show("RenderOver");
+                    //MessageBox.Show("RenderOver");
+                    return;
                 }
                 ReRenderCanvas(ref canvasMain);
                 Task.Delay(30);
@@ -81,21 +92,18 @@ namespace Robot_Manipulator
                 canvasMain.Children.Add(manipulator.links[i]);
         }
 
-        private void CanvasMain_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private async void CanvasMain_MouseLeftButtonDown_BeginLinkManipulation(object sender, MouseButtonEventArgs e)
         {
 
             //Link selectedBar = (Link)e.OriginalSource; //СРавнивая с этим можно будет узнаеть есть ли пересечение.
 
-            if(manipulator.SelectedItem != null)
+            if (manipulator.SelectedItem != null)
             {
                 Point currentPosition = Mouse.GetPosition(canvasMain);
                 manipulator.ChangeSelectedLinkViaNewEndPoint(currentPosition);
+
+                //Dispatcher.Invoke((Action)(() => RenderTaskFunction()));
             }
-            
-
-
-
-
         }
 
         private void CanvasMain_MouseRightButtonDown_SelectLink(object sender, MouseButtonEventArgs e)
@@ -104,9 +112,14 @@ namespace Robot_Manipulator
             {
                 Link selectedBar = (Link)e.OriginalSource;
 
-                //manipulator.ChangeLink(ref selectedBar, testAngle, testLength);
-
-                manipulator.SelectedItem = selectedBar;           
+                if (selectedBar == manipulator.SelectedItem)
+                {
+                    manipulator.SelectedItem = null;
+                }
+                else
+                {
+                    manipulator.SelectedItem = selectedBar;
+                }
             }
             catch(Exception)
             {
@@ -140,16 +153,15 @@ namespace Robot_Manipulator
         private void buttonAddLink_Click(object sender, RoutedEventArgs e)
         {
             manipulator.AddLink();
-            //ReRenderCanvas(ref canvasMain);
         }
 
         private void buttonDeleteLink_Click(object sender, RoutedEventArgs e)
         {
             manipulator.DeleteLink();
-            //ReRenderCanvas(ref canvasMain);
         }
 
-        private void canvasMain_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+
+        private void canvasMain_MouseLeftButtonUp_StopLinkManipulation(object sender, MouseButtonEventArgs e)
         {
             cancelTokenSource.Cancel();
         }

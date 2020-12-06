@@ -129,10 +129,13 @@ namespace Robot_Manipulator
         public void ChangeSelectedLinkViaNewEndPoint(Point newEnd)
         {
 
-            SelectedItem.EndPoint = newEnd;
+            if (SelectedItem != null)
+            {
+                SelectedItem.EndPoint = newEnd;
 
-            UpdateLinksAfterChanges();
-            OnPropertyChanged("ChangeLinkViaEndPoint");
+                UpdateLinksAfterChanges();
+                OnPropertyChanged("ChangeLinkViaEndPoint");
+            }
         }
 
         protected void OnPropertyChanged(string name = null)

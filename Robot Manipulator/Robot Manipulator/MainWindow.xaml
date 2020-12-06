@@ -24,8 +24,8 @@
             <Button x:Name="buttonDeleteLink" Content="del" HorizontalAlignment="Left" Margin="155,403,0,0" VerticalAlignment="Top" Width="26" Click="buttonDeleteLink_Click"/>
         </Grid>
         <Canvas  x:Name="canvasMain"  Margin="10,5,10,10" Background="LightGray"
-                 MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown" 
-                 MouseRightButtonUp="canvasMain_MouseRightButtonUp"
+                 MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown_BeginLinkManipulation" 
+                 MouseLeftButtonUp="canvasMain_MouseLeftButtonUp_StopLinkManipulation"
                  MouseRightButtonDown="CanvasMain_MouseRightButtonDown_SelectLink" 
                  MouseWheel="CanvasMain_MouseWheel" Grid.Row="1">
             <Canvas.Children>
