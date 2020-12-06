@@ -55,8 +55,15 @@ namespace Robot_Manipulator
                 Point currentPosition = Mouse.GetPosition(canvasMain);
                 manipulator.ChangeSelectedLinkViaNewEndPoint(currentPosition);
 
-                textBoxTestAngle.Text = counter++.ToString();
-                
+                if (manipulator.SelectedItem != null)
+                {
+                    int currentAngle = (int)(manipulator.SelectedItem.Angle * 180 / Math.PI);
+                    int currentLength = (int)manipulator.SelectedItem.Length;
+
+                    textBoxTestAngle.Text = currentAngle.ToString();
+                    textBoxTestLength.Text = currentLength.ToString();
+                }
+
             }
         }
 
