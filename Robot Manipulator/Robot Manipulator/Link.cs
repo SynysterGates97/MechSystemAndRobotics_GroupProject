@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows;
+using System.Linq;
 
 namespace Robot_Manipulator
 {
@@ -16,7 +17,7 @@ namespace Robot_Manipulator
         double _length = 0;
         double _angle = 0;
 
-        private LineGeometry _line = new LineGeometry();
+        private LineGeometry lineGeometry = new LineGeometry();
 
         private Point _begPoint = new Point(0, 0);
         private Point _endPoint = new Point(0, 0);
@@ -154,26 +155,38 @@ namespace Robot_Manipulator
             _endPoint.Y = BeginPoint.Y + Length * Math.Sin(convertedToWpfCoordAngle);
         }
 
-        private Geometry GenerateMyWeirdGeometry()
+        void DrawBezierFigure(StreamGeometryContext ctx, PathFigure figure)
         {
-            StreamGeometry geom = new StreamGeometry();
-            using (StreamGeometryContext gc = geom.Open())
-            {
-                _line.StartPoint = BeginPoint;
-                _line.EndPoint = _endPoint;
-
-                gc.BeginFigure(BeginPoint, false, true);
-                gc.LineTo(_endPoint, true, true);
-            }
-
-            return geom;
+            ctx.BeginFigure(figure.StartPoint, figure.IsFilled, figure.IsClosed);
+            foreach (var segment in figure.Segments.OfType<BezierSegment>())
+                ctx.BezierTo(segment.Point1, segment.Point2, segment.Point3, segment.IsStroked, segment.IsSmoothJoin);
         }
+
+        GeometryGroup _linkGeometryGroup = new GeometryGroup();
+        EllipseGeometry _beginJointGeometry = new EllipseGeometry();
+        EllipseGeometry _endJointGeometry = new EllipseGeometry();
 
         protected override Geometry DefiningGeometry
         {
             get
             {
-                return GenerateMyWeirdGeometry();
+                lineGeometry.StartPoint = BeginPoint;
+                lineGeometry.EndPoint = EndPoint;
+
+                _beginJointGeometry.Center = BeginPoint;
+                _beginJointGeometry.RadiusX = 5;
+                _beginJointGeometry.RadiusY = 5;
+
+                _endJointGeometry.Center = EndPoint;
+                _endJointGeometry.RadiusX = 5;
+                _endJointGeometry.RadiusY = 5;
+
+                _linkGeometryGroup.Children.Clear();
+                _linkGeometryGroup.Children.Add(_beginJointGeometry);
+                _linkGeometryGroup.Children.Add(lineGeometry);
+                _linkGeometryGroup.Children.Add(_endJointGeometry);
+
+                return _linkGeometryGroup;
             }
         }
     }
