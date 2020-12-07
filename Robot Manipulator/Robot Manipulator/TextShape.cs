@@ -39,8 +39,10 @@ namespace Robot_Manipulator
                 Point clientBase = PointFromScreen(Position);
                 Geometry textGeo = formatted.BuildGeometry(clientBase);
 
+                
                 return textGeo;
             }
         }
+
     }
 }
