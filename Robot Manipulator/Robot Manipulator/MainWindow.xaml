@@ -16,12 +16,21 @@
             <ColumnDefinition Width="43*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="1" Grid.RowSpan="2" Height="434" VerticalAlignment="Top">
-            <GroupBox x:Name="groupBox" Header="Меню" Margin="10,54,10,90"/>
-            <TextBox x:Name="textBoxTestAngle" HorizontalAlignment="Left" Margin="10,361,0,0" Text="30" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-            <TextBox x:Name="textBoxTestLength" HorizontalAlignment="Left" Margin="10,384,0,0" Text="100" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-            <Label x:Name="label" Content="Angle" HorizontalAlignment="Left" Margin="135,349,0,0" VerticalAlignment="Top" Height="34"/>
-            <Button x:Name="buttonAddLink" Content="Add" HorizontalAlignment="Left" Margin="155,378,0,0" VerticalAlignment="Top" Click="buttonAddLink_Click"/>
-            <Button x:Name="buttonDeleteLink" Content="del" HorizontalAlignment="Left" Margin="155,403,0,0" VerticalAlignment="Top" Width="26" Click="buttonDeleteLink_Click"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="313*"/>
+                <RowDefinition Height="121*"/>
+            </Grid.RowDefinitions>
+            <GroupBox x:Name="groupBox" Header="Меню" Margin="10,53,10,13"/>
+            <TextBox x:Name="textBoxTestAngle" HorizontalAlignment="Left" Margin="10,305,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Grid.RowSpan="2"/>
+            <TextBox x:Name="textBoxTestLength" HorizontalAlignment="Left" Margin="10,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Grid.Row="1"/>
+            <Button x:Name="buttonAddLink" Content="Add" HorizontalAlignment="Left" Margin="158,308,0,0" VerticalAlignment="Top" Click="buttonAddLink_Click" Grid.RowSpan="2" Width="47"/>
+            <Button x:Name="buttonDeleteLink" Content="del" HorizontalAlignment="Left" Margin="158,20,0,0" VerticalAlignment="Top" Width="47" Click="buttonDeleteLink_Click" Grid.Row="1"/>
+            <TextBox x:Name="textBoxInternalX" HorizontalAlignment="Left" Margin="10,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Grid.Row="1"/>
+            <TextBox x:Name="textBoxInternalY" HorizontalAlignment="Left" Margin="10,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Grid.Row="1"/>
+            <Label x:Name="label" Content="Angel&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,305,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0" Grid.RowSpan="2"/>
+            <Label x:Name="label_Copy" Content="Length" HorizontalAlignment="Left" Margin="57,15,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0" Grid.Row="1"/>
+            <Label x:Name="label_Copy1" Content="Xint&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,38,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0" Grid.Row="1"/>
+            <Label x:Name="label_Copy2" Content="Yint&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,61,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0" Grid.Row="1"/>
         </Grid>
         <Canvas  x:Name="canvasMain"  Margin="10,5,10,10" Background="LightGray"
                  MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown_BeginLinkManipulation" 

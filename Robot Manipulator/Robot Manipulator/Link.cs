@@ -25,6 +25,20 @@ namespace Robot_Manipulator
         const double defaultAngle = 90 * (Math.PI / 180);
         const double defaultLenght = 100;
 
+        private Point _myVar;
+
+        //Координаты конца
+        public Point InternalCoordinates
+        {
+            get
+            { 
+                _myVar.Y = -(_endPoint.Y - _begPoint.Y);
+                _myVar.X = _endPoint.X - _begPoint.X;
+
+                return _myVar; 
+            }
+        }
+
         public Link(Point begin, double angleInRad = defaultAngle, double length = defaultLenght)
         {
             BeginPoint = begin;

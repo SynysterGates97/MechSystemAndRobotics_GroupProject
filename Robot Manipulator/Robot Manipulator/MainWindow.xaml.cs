@@ -59,9 +59,14 @@ namespace Robot_Manipulator
                 {
                     int currentAngle = (int)(manipulator.SelectedItem.Angle * 180 / Math.PI);
                     int currentLength = (int)manipulator.SelectedItem.Length;
+                    int currentInternalX = (int)manipulator.SelectedItem.InternalCoordinates.X;
+                    int currentInternalY = (int)manipulator.SelectedItem.InternalCoordinates.Y;
 
                     textBoxTestAngle.Text = currentAngle.ToString();
                     textBoxTestLength.Text = currentLength.ToString();
+
+                    textBoxInternalX.Text = currentInternalX.ToString();
+                    textBoxInternalY.Text = currentInternalY.ToString();
                 }
 
             }
