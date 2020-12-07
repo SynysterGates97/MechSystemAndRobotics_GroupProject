@@ -184,6 +184,24 @@ namespace Robot_Manipulator
         {
             get
             {
+                System.Windows.Media.Typeface backType =
+                new System.Windows.Media.Typeface(new System.Windows.Media.FontFamily("sans courier"),
+                                                  FontStyles.Normal, FontWeights.UltraLight, FontStretches.Normal);
+
+                System.Windows.Media.FormattedText formatted = new System.Windows.Media.FormattedText(
+                                                            "0",
+                                                            System.Globalization.CultureInfo.CurrentCulture,
+                                                            FlowDirection.LeftToRight,
+                                                            backType,
+                                                            30,
+                                                            new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black),
+                                                            0.4
+                                                            );
+                // Make sure the text shows at 0,0 on the primary screen
+
+                Point clientBase = PointFromScreen(BeginPoint);
+                Geometry textGeo = formatted.BuildGeometry(clientBase);
+
                 lineGeometry.StartPoint = BeginPoint;
                 lineGeometry.EndPoint = EndPoint;
 
@@ -199,6 +217,7 @@ namespace Robot_Manipulator
                 _linkGeometryGroup.Children.Add(_beginJointGeometry);
                 _linkGeometryGroup.Children.Add(lineGeometry);
                 _linkGeometryGroup.Children.Add(_endJointGeometry);
+                _linkGeometryGroup.Children.Add(textGeo);
 
                 return _linkGeometryGroup;
             }
