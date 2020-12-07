@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Compile Remove="InternalCoorinatesShape.cs" />
-    <Compile Remove="TextShape.cs" />
   </ItemGroup>
 
 </Project>

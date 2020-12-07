@@ -1,43 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.Text;
+﻿using System.Drawing;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Color = System.Windows.Media.Color;
+using Point = System.Windows.Point;
 
 namespace Robot_Manipulator
 {
     public class TextShape : Shape
     {
+        public TextShape()
+        {
+            Stroke = System.Windows.Media.Brushes.Black;
+            StrokeThickness = 3;
+        }
         public string Text { get; set; }
-        public float X { get; set; }
-        public float Y { get; set; }
-        public Color TextColor { get; set; }
-        public float TextHeight { get; set; }
+
+        public Point Position { get; set; }
 
         protected override Geometry DefiningGeometry
         {
-            get { return Geometry.Empty; }
-        }
-        protected override void OnRender (DrawingContext drawingContext)
-        {
+            get 
+            {
+                System.Windows.Media.Typeface backType =
+                new System.Windows.Media.Typeface(new System.Windows.Media.FontFamily("sans courier"),
+                                                  FontStyles.Normal, FontWeights.UltraLight, FontStretches.Normal);
 
-            FormattedText ft = new FormattedText(
-                Text, 
-                new CultureInfo("ru-ru"), 
-                System.Windows.FlowDirection.LeftToRight,
-                new Typeface(new FontFamily("Arial"),
-                FontStyles.Normal,
-                FontWeights.Bold,
-                new FontStretch()),
-                TextHeight,
-                new SolidColorBrush(TextColor));
+                System.Windows.Media.FormattedText formatted = new System.Windows.Media.FormattedText(
+                                                            "0",
+                                                            System.Globalization.CultureInfo.CurrentCulture,
+                                                            FlowDirection.LeftToRight,
+                                                            backType,
+                                                            30,
+                                                            new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black),
+                                                            0.4
+                                                            );
+                // Make sure the text shows at 0,0 on the primary screen
 
-            drawingContext.DrawText
-               (ft, new Point(X, Y));
-            //base.OnRender(drawingContext);
+                Point clientBase = PointFromScreen(Position);
+                Geometry textGeo = formatted.BuildGeometry(clientBase);
+
+                return textGeo;
+            }
         }
     }
 }

@@ -85,6 +85,9 @@ namespace Robot_Manipulator
 
             for (int i = 0; i < manipulator.links.Count; i++)
                 canvasMain.Children.Add(manipulator.links[i]);
+
+            if(manipulator.selectedItemTextShape != null)
+                canvasMain.Children.Add(manipulator.selectedItemTextShape);
         }
 
         private void CanvasMain_MouseLeftButtonDown_BeginLinkManipulation(object sender, MouseButtonEventArgs e)

@@ -28,6 +28,8 @@ namespace Robot_Manipulator
         //Это пока в рамках быстрого прототипа
         Point firstLinkBeginPoint = new Point(x: 200, y: 700);
 
+        public TextShape selectedItemTextShape = new TextShape();
+
         private Link _selectedLink;
         public Link SelectedItem
         {
@@ -46,7 +48,14 @@ namespace Robot_Manipulator
                         else
                         {
                             //по идее функция будет вызываться уже для элементов массива, т.е. можно было бы напрямую у value цвет менять.
+
                             links[i].Stroke = System.Windows.Media.Brushes.Black;
+
+                            if (selectedItemTextShape != null)
+                            {
+                                selectedItemTextShape.Position = value.BeginPoint;
+                            }
+
                         }
                     }
                 }
