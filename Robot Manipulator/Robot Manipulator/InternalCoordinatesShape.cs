@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
@@ -44,12 +45,13 @@ namespace Robot_Manipulator
             set { _origin = value; }
         }
 
-        //private System.Windows.Media.Typeface backType =
-        //        new System.Windows.Media.Typeface(new System.Windows.Media.FontFamily("sans courier"),
-        //                                          FontStyles.Normal, FontWeights.UltraLight, FontStretches.Normal);
+        private System.Windows.Media.Typeface backType =
+                new System.Windows.Media.Typeface(new System.Windows.Media.FontFamily("sans courier"),
+                                                  FontStyles.Normal, FontWeights.UltraLight, FontStretches.Normal);
 
-        //System.Windows.Media.FormattedText formattedText = new System.Windows.Media.FormattedText()
+        
 
+        
         protected override Geometry DefiningGeometry
         {
             get 
@@ -64,23 +66,22 @@ namespace Robot_Manipulator
                 _xValueShape.Position = new Point(_x / 2 + _origin.X, _origin.Y);
                 _yValueShape.Position = new Point(_origin.X, _y/2 + _origin.Y);
 
-                
+                string internalXString = ((int)X).ToString();
+                FormattedText formattedText = new FormattedText(
+                    internalXString,
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    new Typeface("Verdana"),
+                    32,
+                    Brushes.Black);
 
-                //System.Windows.Media.FormattedText formatted = new System.Windows.Media.FormattedText(
-                //                                            "0",
-                //                                            System.Globalization.CultureInfo.CurrentCulture,
-                //                                            FlowDirection.LeftToRight,
-                //                                            backType,
-                //                                            30,
-                //                                            new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black),
-                //                                            0.4
-                //                                            );
+                Geometry textGeoX = formattedText.BuildGeometry(new Point(_x / 2 + _origin.X, _origin.Y));
 
                 _geometryGroup.Children.Clear();
 
                 _geometryGroup.Children.Add(_xLineGeometry);
                 _geometryGroup.Children.Add(_yLineGeometry);
-                _geometryGroup.Children.Add(_xValueShape.RenderedGeometry);
+                _geometryGroup.Children.Add(textGeoX);
                 _geometryGroup.Children.Add(_yValueShape.RenderedGeometry);
 
 
