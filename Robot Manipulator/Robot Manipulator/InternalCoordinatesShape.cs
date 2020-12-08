@@ -34,9 +34,6 @@ namespace Robot_Manipulator
         private LineGeometry _xLineGeometry = new LineGeometry();
         private LineGeometry _yLineGeometry = new LineGeometry();
 
-        private TextShape _xValueShape = new TextShape();
-        private TextShape _yValueShape = new TextShape();
-
         private GeometryGroup _geometryGroup = new GeometryGroup();
 
         public Point Origin
@@ -50,6 +47,18 @@ namespace Robot_Manipulator
                                                   FontStyles.Normal, FontWeights.UltraLight, FontStretches.Normal);
 
         
+        private Geometry GetGeometryFromText(string text, Point position)
+        {
+            FormattedText formattedText = new FormattedText(
+                    text,
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    new Typeface("Times New Roman"),
+                    32,
+                    Brushes.Black);
+
+            return formattedText.BuildGeometry(position);
+        }
 
         
         protected override Geometry DefiningGeometry
@@ -63,26 +72,19 @@ namespace Robot_Manipulator
                 _yLineGeometry.StartPoint = _origin;
                 _yLineGeometry.EndPoint = new Point(_origin.X, _y + _origin.Y);
 
-                _xValueShape.Position = new Point(_x / 2 + _origin.X, _origin.Y);
-                _yValueShape.Position = new Point(_origin.X, _y/2 + _origin.Y);
+                string xAxisValue = ((int)X).ToString();
+                string yAxisValue = (-(int)Y).ToString();
 
-                string internalXString = ((int)X).ToString();
-                FormattedText formattedText = new FormattedText(
-                    internalXString,
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    new Typeface("Verdana"),
-                    32,
-                    Brushes.Black);
 
-                Geometry textGeoX = formattedText.BuildGeometry(new Point(_x / 2 + _origin.X, _origin.Y));
+                Point xAxisValuePosition = new Point(_x / 2 + _origin.X, _origin.Y);
+                Point yAxisValuePosition = new Point(_origin.X, _y / 2 + _origin.Y);
 
                 _geometryGroup.Children.Clear();
 
                 _geometryGroup.Children.Add(_xLineGeometry);
                 _geometryGroup.Children.Add(_yLineGeometry);
-                _geometryGroup.Children.Add(textGeoX);
-                _geometryGroup.Children.Add(_yValueShape.RenderedGeometry);
+                _geometryGroup.Children.Add(GetGeometryFromText(xAxisValue, xAxisValuePosition));
+                _geometryGroup.Children.Add(GetGeometryFromText(yAxisValue, yAxisValuePosition));
 
 
 
