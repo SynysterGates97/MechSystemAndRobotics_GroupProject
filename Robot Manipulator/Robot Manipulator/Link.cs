@@ -12,7 +12,7 @@ namespace Robot_Manipulator
     //Должны быть
     //Длина
     //И угол
-    class Link : Shape
+    class Link : CustomShape
     {
         double _length = 0;
         double _angle = 0;
@@ -170,13 +170,6 @@ namespace Robot_Manipulator
             double convertedToWpfCoordAngle = ConvertAngleToWpfAngle(Angle);
             _endPoint.X = BeginPoint.X + Length * Math.Cos(convertedToWpfCoordAngle);
             _endPoint.Y = BeginPoint.Y + Length * Math.Sin(convertedToWpfCoordAngle);
-        }
-
-        void DrawBezierFigure(StreamGeometryContext ctx, PathFigure figure)
-        {
-            ctx.BeginFigure(figure.StartPoint, figure.IsFilled, figure.IsClosed);
-            foreach (var segment in figure.Segments.OfType<BezierSegment>())
-                ctx.BezierTo(segment.Point1, segment.Point2, segment.Point3, segment.IsStroked, segment.IsSmoothJoin);
         }
 
         GeometryGroup _linkGeometryGroup = new GeometryGroup();
