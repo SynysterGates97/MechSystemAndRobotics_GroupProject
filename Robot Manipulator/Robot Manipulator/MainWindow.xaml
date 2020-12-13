@@ -5,17 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Robot_Manipulator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="567" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50.005"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="117*"/>
-            <ColumnDefinition Width="43*"/>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="578*"/>
+            <ColumnDefinition Width="215*"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="1" Grid.RowSpan="2" Height="434" VerticalAlignment="Top">
+        <Grid Grid.Column="2" Grid.RowSpan="2" Height="434" VerticalAlignment="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="313*"/>
                 <RowDefinition Height="121*"/>
@@ -32,25 +33,25 @@
             <Label x:Name="label_Copy1" Content="Xint&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,38,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0" Grid.Row="1"/>
             <Label x:Name="label_Copy2" Content="Yint&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,61,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0" Grid.Row="1"/>
         </Grid>
-        <Canvas  x:Name="canvasMain"  Margin="10,5,10,10" Background="LightGray"
+        <Canvas  x:Name="canvasMain"  Margin="3,5,10,10" Background="LightGray"
                  MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown_BeginLinkManipulation" 
                  MouseLeftButtonUp="canvasMain_MouseLeftButtonUp_StopLinkManipulation"
                  MouseRightButtonDown="CanvasMain_MouseRightButtonDown_SelectLink" 
-                 MouseWheel="CanvasMain_MouseWheel" Grid.Row="1">
+                 MouseWheel="CanvasMain_MouseWheel" Grid.Row="1" Grid.Column="1">
             <Canvas.Children>
             </Canvas.Children>
         </Canvas>
 
 
 
-        <ItemsControl ItemsSource="{Binding }">
+        <ItemsControl ItemsSource="{Binding }" Grid.ColumnSpan="2">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <Menu x:Name="menu" Margin="10,10,10,10" Grid.ColumnSpan="2">
+        <Menu x:Name="menu" Margin="3,10,10,10" Grid.ColumnSpan="2" Grid.Column="1">
             <MenuItem Header="File">
                 <MenuItem Header="New Project" ></MenuItem>
                 <MenuItem Header="Open Project" >

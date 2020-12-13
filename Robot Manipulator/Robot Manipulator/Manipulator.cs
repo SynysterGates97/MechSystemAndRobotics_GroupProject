@@ -83,6 +83,16 @@ namespace Robot_Manipulator
 
             OnPropertyChanged("Manipulator");
         }
+        public Manipulator(Point begin)
+        {
+            links = new ObservableCollection<Link>();
+
+            Link firstLink = new Link(begin);
+
+            links.Add(firstLink);
+
+            OnPropertyChanged("Manipulator");
+        }
 
         public void AddLink()
         {

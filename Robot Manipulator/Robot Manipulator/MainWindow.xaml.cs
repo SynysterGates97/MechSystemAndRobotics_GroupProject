@@ -24,26 +24,32 @@ namespace Robot_Manipulator
     {
         Manipulator manipulator;
 
-        static CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+        DispatcherTimer renderingTimer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 30) };
 
-        CancellationToken token = cancelTokenSource.Token;
+        protected override void OnContentRendered(EventArgs e)
+        {
+            //Возможно есть лучший способ как узнать размер открытой канвы.
+            double beginX = canvasMain.ActualWidth / 2;
+            double beginY = canvasMain.ActualHeight / 2;
 
-        DispatcherTimer renderingTimer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 30) };
+            manipulator = new Manipulator(new Point(beginX, beginY));
+            manipulator.PropertyChanged += Manipulator_PropertyChanged;
+            ReRenderCanvas(ref canvasMain);
 
+        }
         public MainWindow()
         {
-            InitializeComponent();
-            manipulator = new Manipulator();
-            ReRenderCanvas(ref canvasMain);
-            manipulator.PropertyChanged += Manipulator_PropertyChanged;
+            InitializeComponent();            
+            
             canvasMain.MouseMove += CanvasMain_MouseMove_renderActive;
             renderingTimer.Tick += RenderingTimer_Tick;
             renderingTimer.Start();
-
         }
 
         private void RenderingTimer_Tick(object sender, EventArgs e)
         {
+            double beginX = canvasMain.ActualWidth / 2;
+            double beginY = -canvasMain.ActualHeight / 2;
             ReRenderCanvas(ref canvasMain);
         }
 
@@ -159,7 +165,7 @@ namespace Robot_Manipulator
 
         private void canvasMain_MouseLeftButtonUp_StopLinkManipulation(object sender, MouseButtonEventArgs e)
         {
-            cancelTokenSource.Cancel();
+            //cancelTokenSource.Cancel();
         }
     }
 }
