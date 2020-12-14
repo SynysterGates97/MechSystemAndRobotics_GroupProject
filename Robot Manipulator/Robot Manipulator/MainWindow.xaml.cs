@@ -48,8 +48,6 @@ namespace Robot_Manipulator
 
         private void RenderingTimer_Tick(object sender, EventArgs e)
         {
-            double beginX = canvasMain.ActualWidth / 2;
-            double beginY = -canvasMain.ActualHeight / 2;
             ReRenderCanvas(ref canvasMain);
         }
 
@@ -89,6 +87,18 @@ namespace Robot_Manipulator
         {
             canvasMain.Children.Clear();
 
+            bool selectedItemExist = manipulator.SelectedItem != null;
+
+            if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight, canvasMain.ActualWidth))
+            {
+                if(selectedItemExist)
+                    manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Red;
+            }
+            else
+            {
+                if (selectedItemExist)
+                    manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Black;
+            }
             for (int i = 0; i < manipulator.links.Count; i++)
                 canvasMain.Children.Add(manipulator.links[i]);
 

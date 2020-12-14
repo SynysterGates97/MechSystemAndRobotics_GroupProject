@@ -151,6 +151,20 @@ namespace Robot_Manipulator
             }
         }
 
+        public bool IsShapesOutOfCanvas(double canvasActualHeight, double cavasActualWidth)
+        {
+            foreach (var link in links)
+            {
+                if (link.BeginPoint.X > cavasActualWidth || link.EndPoint.X > cavasActualWidth ||
+                    link.BeginPoint.X < 0 || link.EndPoint.X < 0)
+                    return true;
+                if (link.BeginPoint.Y > canvasActualHeight || link.EndPoint.Y > canvasActualHeight ||
+                    link.BeginPoint.Y < 0 || link.EndPoint.Y < 0)
+                    return true;
+            }
+            return false;
+        }
+
         protected void OnPropertyChanged(string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
