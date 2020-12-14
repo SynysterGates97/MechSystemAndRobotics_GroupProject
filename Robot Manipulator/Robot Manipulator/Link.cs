@@ -176,18 +176,27 @@ namespace Robot_Manipulator
         EllipseGeometry _beginJointGeometry = new EllipseGeometry();
         EllipseGeometry _endJointGeometry = new EllipseGeometry();
 
+        //TODO: лучше выделить все в метод типа ScaleGeometry
+        private Point _scaledEndPoint = new Point();
+        private Point _scaledBeginPoint = new Point();
         protected override Geometry DefiningGeometry
         {
             get
             {
-                lineGeometry.StartPoint = BeginPoint;
-                lineGeometry.EndPoint = EndPoint;
+                _scaledEndPoint.X = EndPoint.X / scaleCoefficient;
+                _scaledEndPoint.Y = EndPoint.Y / scaleCoefficient;
 
-                _beginJointGeometry.Center = BeginPoint;
+                _scaledBeginPoint.X = BeginPoint.X / scaleCoefficient;
+                _scaledBeginPoint.Y = BeginPoint.Y / scaleCoefficient;
+
+                lineGeometry.StartPoint = _scaledBeginPoint;
+                lineGeometry.EndPoint = _scaledEndPoint;
+
+                _beginJointGeometry.Center = _scaledBeginPoint;
                 _beginJointGeometry.RadiusX = 5;
                 _beginJointGeometry.RadiusY = 5;
 
-                _endJointGeometry.Center = EndPoint;
+                _endJointGeometry.Center = _scaledEndPoint;
                 _endJointGeometry.RadiusX = 5;
                 _endJointGeometry.RadiusY = 5;
 

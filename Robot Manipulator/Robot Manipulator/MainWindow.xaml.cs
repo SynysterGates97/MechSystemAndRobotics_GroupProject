@@ -104,6 +104,7 @@ namespace Robot_Manipulator
             if (manipulator.SelectedItem != null)
             {
                 Point currentPosition = Mouse.GetPosition(canvasMain);
+                //currentPosition.Y *= CustomShape.scaleCoefficient;
                 manipulator.ChangeSelectedLinkViaNewEndPoint(currentPosition);
             }
         }
@@ -136,20 +137,31 @@ namespace Robot_Manipulator
         const double ScaleRate = 1.1;
         private void CanvasMain_MouseWheel(object sender, MouseWheelEventArgs e)
         {
+           
 
-            Canvas c = sender as Canvas;
-            ScaleTransform st = new ScaleTransform();
-            c.RenderTransform = st;
             if (e.Delta > 0)
             {
-                st.ScaleX *= ScaleRate;
-                st.ScaleY *= ScaleRate;
+                CustomShape.scaleCoefficient += (float)0.5;
             }
             else
             {
-                st.ScaleX /= ScaleRate;
-                st.ScaleY /= ScaleRate;
+                CustomShape.scaleCoefficient -= (float)0.5;
             }
+
+
+            //Canvas c = sender as Canvas;
+            //ScaleTransform st = new ScaleTransform();
+            //c.RenderTransform = st;
+            //if (e.Delta > 0)
+            //{
+            //    st.ScaleX *= ScaleRate;
+            //    st.ScaleY *= ScaleRate;
+            //}
+            //else
+            //{
+            //    st.ScaleX /= ScaleRate;
+            //    st.ScaleY /= ScaleRate;
+            //}
         }
 
         private void buttonAddLink_Click(object sender, RoutedEventArgs e)

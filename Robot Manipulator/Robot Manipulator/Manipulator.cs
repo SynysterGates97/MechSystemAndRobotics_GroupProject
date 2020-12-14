@@ -142,6 +142,8 @@ namespace Robot_Manipulator
 
             if (SelectedItem != null)
             {
+                newEnd.X *= CustomShape.scaleCoefficient;
+                newEnd.Y *= CustomShape.scaleCoefficient;
                 SelectedItem.EndPoint = newEnd;
 
                 UpdateLinksAfterChanges();

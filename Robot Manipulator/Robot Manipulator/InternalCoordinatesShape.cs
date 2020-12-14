@@ -60,24 +60,36 @@ namespace Robot_Manipulator
             return formattedText.BuildGeometry(position);
         }
 
-        
+        private Point _scaledBegin = new Point();
+        private Point _scaledXEnd = new Point();
+        private Point _scaledYEnd = new Point();
         protected override Geometry DefiningGeometry
         {
             get 
             {
-                //Закроем глаза на выделение памяти для точек
-                _xLineGeometry.StartPoint = _origin;
-                _xLineGeometry.EndPoint = new Point(_x + _origin.X, _origin.Y);
+                _scaledBegin.X = _origin.X / scaleCoefficient;
+                _scaledBegin.Y = _origin.Y / scaleCoefficient;
 
-                _yLineGeometry.StartPoint = _origin;
-                _yLineGeometry.EndPoint = new Point(_origin.X, _y + _origin.Y);
+                _scaledXEnd.X = (_x + _origin.X) / scaleCoefficient;
+                _scaledXEnd.Y = _origin.Y / scaleCoefficient;
+
+                _scaledYEnd.X = _origin.X / scaleCoefficient;
+                _scaledYEnd.Y = (_y + _origin.Y) / scaleCoefficient;
+
+                //Закроем глаза на выделение памяти для точек
+                _xLineGeometry.StartPoint = _scaledBegin;
+                _xLineGeometry.EndPoint = _scaledXEnd;
+
+                _yLineGeometry.StartPoint = _scaledBegin;
+                _yLineGeometry.EndPoint = _scaledYEnd;
 
                 string xAxisValue = ((int)X).ToString();
                 string yAxisValue = (-(int)Y).ToString();
 
-
-                Point xAxisValuePosition = new Point(_x / 2 + _origin.X, _origin.Y);
-                Point yAxisValuePosition = new Point(_origin.X, _y / 2 + _origin.Y);
+                Point xAxisValuePosition = new Point((_x / 2 + _origin.X)/ scaleCoefficient, 
+                    _origin.Y / scaleCoefficient);
+                Point yAxisValuePosition = new Point(_origin.X / scaleCoefficient, 
+                    (_y / 2 + _origin.Y) / scaleCoefficient);
 
                 _geometryGroup.Children.Clear();
 

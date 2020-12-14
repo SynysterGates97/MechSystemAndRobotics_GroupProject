@@ -12,6 +12,6 @@ namespace Robot_Manipulator
     abstract class CustomShape : Shape
     {
         //ScaleCoefficient позволит масштабировать фигуры
-        public static float ScaleCoeffiecient { get; set; }
+        public static float scaleCoefficient = 1;
     }
 }
