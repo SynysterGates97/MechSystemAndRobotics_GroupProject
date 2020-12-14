@@ -12,7 +12,7 @@ namespace Robot_Manipulator
     //Должны быть
     //Длина
     //И угол
-    class Link : CustomShape
+    class Link : ManipulatorElement
     {
         double _length = 0;
         double _angle = 0;
@@ -174,8 +174,6 @@ namespace Robot_Manipulator
         }
 
         GeometryGroup _linkGeometryGroup = new GeometryGroup();
-        EllipseGeometry _beginJointGeometry = new EllipseGeometry();
-        EllipseGeometry _endJointGeometry = new EllipseGeometry();
 
         //TODO: лучше выделить все в метод типа ScaleGeometry
         private Point _scaledEndPoint = new Point();
@@ -193,18 +191,8 @@ namespace Robot_Manipulator
                 lineGeometry.StartPoint = _scaledBeginPoint;
                 lineGeometry.EndPoint = _scaledEndPoint;
 
-                _beginJointGeometry.Center = _scaledBeginPoint;
-                _beginJointGeometry.RadiusX = 5;
-                _beginJointGeometry.RadiusY = 5;
-
-                _endJointGeometry.Center = _scaledEndPoint;
-                _endJointGeometry.RadiusX = 5;
-                _endJointGeometry.RadiusY = 5;
-
                 _linkGeometryGroup.Children.Clear();
-                _linkGeometryGroup.Children.Add(_beginJointGeometry);
                 _linkGeometryGroup.Children.Add(lineGeometry);
-                _linkGeometryGroup.Children.Add(_endJointGeometry);
 
                 return _linkGeometryGroup;
             }

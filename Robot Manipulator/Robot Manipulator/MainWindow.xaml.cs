@@ -51,7 +51,6 @@ namespace Robot_Manipulator
             ReRenderCanvas(ref canvasMain);
         }
 
-        static int counter = 0;
         private void CanvasMain_MouseMove_renderActive(object sender, MouseEventArgs e)
         {
             if(e.LeftButton == MouseButtonState.Pressed)
@@ -95,11 +94,11 @@ namespace Robot_Manipulator
 
             //manipulator.AlignFirstLink(canvasCenter);
 
-            if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight * CustomShape.scaleCoefficient, canvasMain.ActualWidth * CustomShape.scaleCoefficient))
+            if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight * ManipulatorElement.scaleCoefficient, canvasMain.ActualWidth * ManipulatorElement.scaleCoefficient))
             {
                 if(selectedItemExist)
                     manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Red;
-                CustomShape.scaleCoefficient += (float)0.5;
+                ManipulatorElement.scaleCoefficient += (float)0.5;
             }
             else
             {
@@ -121,7 +120,7 @@ namespace Robot_Manipulator
             if (manipulator.SelectedItem != null)
             {
                 Point currentPosition = Mouse.GetPosition(canvasMain);
-                //currentPosition.Y *= CustomShape.scaleCoefficient;
+
                 manipulator.ChangeSelectedLinkViaNewEndPoint(currentPosition);
             }
         }
@@ -151,18 +150,18 @@ namespace Robot_Manipulator
             }
         }
 
-        const double ScaleRate = 1.1;
+        const float ScaleRate = 2;
         private void CanvasMain_MouseWheel(object sender, MouseWheelEventArgs e)
         {
            
 
             if (e.Delta > 0)
             {
-                CustomShape.scaleCoefficient += (float)0.5;
+                ManipulatorElement.scaleCoefficient += ScaleRate;
             }
             else
             {
-                CustomShape.scaleCoefficient -= (float)0.5;
+                ManipulatorElement.scaleCoefficient -= ScaleRate;
             }
 
 

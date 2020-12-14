@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 
 namespace Robot_Manipulator
 {
-    class InternalCoordinatesShape : CustomShape
+    class InternalCoordinatesShape : ManipulatorElement
     {
         public InternalCoordinatesShape()
         {

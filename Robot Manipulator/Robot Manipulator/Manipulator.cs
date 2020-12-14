@@ -128,8 +128,8 @@ namespace Robot_Manipulator
         {
             if (links[0] != null)
             {
-                newBegin.X *= CustomShape.scaleCoefficient;
-                newBegin.Y *= CustomShape.scaleCoefficient;
+                newBegin.X *= ManipulatorElement.scaleCoefficient;
+                newBegin.Y *= ManipulatorElement.scaleCoefficient;
                 links[0].BeginPoint = newBegin;
 
                 UpdateLinksAfterChanges();
@@ -141,8 +141,8 @@ namespace Robot_Manipulator
         {
             if (SelectedItem != null)
             {
-                newEnd.X *= CustomShape.scaleCoefficient;
-                newEnd.Y *= CustomShape.scaleCoefficient;
+                newEnd.X *= ManipulatorElement.scaleCoefficient;
+                newEnd.Y *= ManipulatorElement.scaleCoefficient;
                 SelectedItem.EndPoint = newEnd;
 
                 UpdateLinksAfterChanges();
