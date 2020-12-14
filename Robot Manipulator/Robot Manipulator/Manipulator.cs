@@ -15,7 +15,7 @@ namespace Robot_Manipulator
     
     class Manipulator : INotifyPropertyChanged
     {
-        public ObservableCollection<Link> links;
+        public ObservableCollection<ManipulatorElement> elements;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -26,36 +26,36 @@ namespace Robot_Manipulator
 
         //TODO: Нужно как-то высчитывать начальную точку, или подгонять полотно под нее
         //Это пока в рамках быстрого прототипа
-        Point firstLinkBeginPoint = new Point(x: 200, y: 700);
+        Point firstJointBeginPoint = new Point(x: 200, y: 700);
 
 
-        private Link _selectedLink;
+        private ManipulatorElement _selectedElement;
        
-        public Link SelectedItem
+        public ManipulatorElement SelectedItem
         {
-            get { return _selectedLink; }
+            get { return _selectedElement; }
             set
             {
-                void UpdateLinksColor(Link value)
+                void UpdateLinksColor(ManipulatorElement value)
                 {
-                    for (int i = 0; i < links.Count(); i++)
+                    for (int i = 0; i < elements.Count(); i++)
                     {
-                        if (links[i] != value)
+                        if (elements[i] != value)
                         {
                             //Все невыбранные приводим к голубому цвету
-                            links[i].Stroke = System.Windows.Media.Brushes.Blue;
+                            elements[i].Stroke = System.Windows.Media.Brushes.Blue;
                         }
                         else
                         {
                             //по идее функция будет вызываться уже для элементов массива, т.е. можно было бы напрямую у value цвет менять.
 
-                            links[i].Stroke = System.Windows.Media.Brushes.Black;
+                            elements[i].Stroke = System.Windows.Media.Brushes.Black;
                         }
                     }
                 }
 
                 UpdateLinksColor(value);
-                _selectedLink = value;
+                _selectedElement = value;
 
                 OnPropertyChanged("SelectedItem");
             }
@@ -64,11 +64,11 @@ namespace Robot_Manipulator
         public bool UpdateLinksAfterChanges()
         {
             bool islinksUpdated = false;
-            for(int i = 1; i < links.Count(); i++)
+            for(int i = 1; i < elements.Count(); i++)
             {
-                if(links[i-1].EndPoint != links[1].BeginPoint)
+                if(elements[i-1].EndPoint != elements[1].BeginPoint)
                 {
-                    links[i].BeginPoint = links[i - 1].EndPoint;
+                    elements[i].BeginPoint = elements[i - 1].EndPoint;
                     islinksUpdated = true;
                 }
             }
@@ -77,44 +77,66 @@ namespace Robot_Manipulator
         }
         public Manipulator()
         {
-            links = new ObservableCollection<Link>();
+            elements = new ObservableCollection<ManipulatorElement>();
 
-            Link _firstLink = new Link(firstLinkBeginPoint);
+            Joint _firstLink = new Joint(firstJointBeginPoint);
 
-            links.Add(_firstLink);
+            elements.Add(_firstLink);
 
             OnPropertyChanged("Manipulator");
         }
         public Manipulator(Point begin)
         {
-            links = new ObservableCollection<Link>();
+            elements = new ObservableCollection<ManipulatorElement>();
 
             Link firstLink = new Link(begin);
 
-            links.Add(firstLink);
+            elements.Add(firstLink);
 
             OnPropertyChanged("Manipulator");
         }
 
-        public void AddLink()
+        public void AddElement()
         {
-            Point newLinkBeginPoint = links.Last().EndPoint;
+            if (elements.Last().ElementType == ManipulatorElement.elementTypes.JOINT)
+            {
+                AddLink();
+            }
+            else if (elements.Last().ElementType == ManipulatorElement.elementTypes.LINK)
+            {
+                AddJoint();
+            }
+        }
+
+        private void AddLink()
+        {
+            Point newLinkBeginPoint = elements.Last().BeginPosition;// Соединяем только с сочленениями
 
             Link newLink = new Link(newLinkBeginPoint);
 
-            links.Add(newLink);
+            elements.Add(newLink);
 
             OnPropertyChanged("AddLink");
         }
+        private void AddJoint()
+        {
+            Point newLinkBeginPoint = ((Link)elements.Last()).EndPoint;
 
-        public bool DeleteLink()
+            Joint newLink = new Joint(newLinkBeginPoint);
+
+            elements.Add(newLink);
+
+            OnPropertyChanged("AddJoint");
+        }
+
+        public bool DeleteLastElement()
         {
             //Нельзя удалить начальный элемент
-            if (links.Count > 1)
+            if (elements.Count > 1)
             {
-                Link lastLink = links.Last();
+                ManipulatorElement lastElement = elements.Last();
                 
-                if(links.Remove(lastLink))
+                if(elements.Remove(lastElement))
                 {
                     OnPropertyChanged("DeleteLink");
                     return true;
@@ -124,26 +146,42 @@ namespace Robot_Manipulator
 
         }
 
-        public void AlignFirstLink(Point newBegin)
-        {
-            if (links[0] != null)
-            {
-                newBegin.X *= ManipulatorElement.scaleCoefficient;
-                newBegin.Y *= ManipulatorElement.scaleCoefficient;
-                links[0].BeginPoint = newBegin;
+        //public void AlignFirstLink(Point newBegin)
+        //{
+        //    if (elements[0] != null)
+        //    {
+        //        newBegin.X *= ManipulatorElement.scaleCoefficient;
+        //        newBegin.Y *= ManipulatorElement.scaleCoefficient;
+        //        elements[0].BeginPoint = newBegin;
 
-                UpdateLinksAfterChanges();
-                OnPropertyChanged("AlignFirstLink");
-            }
+        //        UpdateLinksAfterChanges();
+        //        OnPropertyChanged("AlignFirstLink");
+        //    }
 
-        }
+        //}
         public void ChangeSelectedLinkViaNewEndPoint(Point newEnd)
         {
             if (SelectedItem != null)
             {
-                newEnd.X *= ManipulatorElement.scaleCoefficient;
-                newEnd.Y *= ManipulatorElement.scaleCoefficient;
-                SelectedItem.EndPoint = newEnd;
+                switch (SelectedItem.ElementType)
+                {
+                    case ManipulatorElement.elementTypes.NULL_ELEMENT:
+                        break;
+                    case ManipulatorElement.elementTypes.LINK:
+                        {
+                            newEnd.X *= ManipulatorElement.scaleCoefficient;
+                            newEnd.Y *= ManipulatorElement.scaleCoefficient;
+                            SelectedItem.EndPoint = newEnd;
+                            break;
+                        }
+                    case ManipulatorElement.elementTypes.JOINT:
+                        break;
+                    case ManipulatorElement.elementTypes.INT_COORDINATES:
+                        break;
+                    default:
+                        break;
+                }
+                
 
                 UpdateLinksAfterChanges();
                 OnPropertyChanged("ChangeLinkViaEndPoint");
@@ -152,7 +190,7 @@ namespace Robot_Manipulator
 
         public bool IsShapesOutOfCanvas(double canvasActualHeight, double cavasActualWidth)
         {
-            foreach (var link in links)
+            foreach (var link in elements)
             {
                 if (link.BeginPoint.X > cavasActualWidth || link.EndPoint.X > cavasActualWidth ||
                     link.BeginPoint.X < 0 || link.EndPoint.X < 0)

@@ -19,7 +19,6 @@ namespace Robot_Manipulator
 
         private LineGeometry lineGeometry = new LineGeometry();
 
-        private Point _begPoint = new Point(0, 0);
         private Point _endPoint = new Point(0, 0);
 
         const double defaultAngle = 90 * (Math.PI / 180);
@@ -36,7 +35,8 @@ namespace Robot_Manipulator
 
         public Link(Point begin, double angleInRad = defaultAngle, double length = defaultLenght)
         {
-            BeginPoint = begin;
+            _elementType = elementTypes.LINK;
+            BeginPosition = begin;
             Angle = angleInRad;
             Length = length;
 
@@ -46,23 +46,24 @@ namespace Robot_Manipulator
 
         public Link()
         {
-
+            _elementType = elementTypes.LINK;
             Stroke = System.Windows.Media.Brushes.Blue;
             StrokeThickness = 10;
         }
 
-        public Point BeginPoint
+        Point _beginPosition = new Point();
+        override public Point BeginPosition
         {
+            get
+            {
+                return _beginPosition;
+            }
             set
             {
-                _begPoint = value;
+                _beginPosition = value;
                 RecalculateEndPoint();
                 RecalculateInternalCoordinates();
                 _internalCoordinatesShape.Origin = value;
-            }
-            get
-            {
-                return _begPoint;
             }
         }
 
@@ -81,8 +82,8 @@ namespace Robot_Manipulator
 
         private void RecalculateInternalCoordinates()
         {
-            _internalCoordinatesShape.Y = _endPoint.Y - _begPoint.Y;
-            _internalCoordinatesShape.X = _endPoint.X - _begPoint.X;
+            _internalCoordinatesShape.Y = _endPoint.Y - BeginPosition.Y;
+            _internalCoordinatesShape.X = _endPoint.X - BeginPosition.X;
         }
         //в радианах
         public double Angle
@@ -118,8 +119,8 @@ namespace Robot_Manipulator
 
         private void RecalculateAngleAndLengthViaEndPoint(Point value)
         {
-            double lengthProjectionX = value.X - BeginPoint.X;
-            double lengthProjectionY = value.Y - BeginPoint.Y;
+            double lengthProjectionX = value.X - BeginPosition.X;
+            double lengthProjectionY = value.Y - BeginPosition.Y;
 
             double newLength = Math.Sqrt(
                 Math.Pow(lengthProjectionX, 2) +
@@ -169,8 +170,8 @@ namespace Robot_Manipulator
         private void RecalculateEndPoint()
         {
             double convertedToWpfCoordAngle = ConvertAngleToWpfAngle(Angle);
-            _endPoint.X = BeginPoint.X + Length * Math.Cos(convertedToWpfCoordAngle);
-            _endPoint.Y = BeginPoint.Y + Length * Math.Sin(convertedToWpfCoordAngle);
+            _endPoint.X = BeginPosition.X + Length * Math.Cos(convertedToWpfCoordAngle);
+            _endPoint.Y = BeginPosition.Y + Length * Math.Sin(convertedToWpfCoordAngle);
         }
 
         GeometryGroup _linkGeometryGroup = new GeometryGroup();
@@ -185,8 +186,8 @@ namespace Robot_Manipulator
                 _scaledEndPoint.X = EndPoint.X / scaleCoefficient;
                 _scaledEndPoint.Y = EndPoint.Y / scaleCoefficient;
 
-                _scaledBeginPoint.X = BeginPoint.X / scaleCoefficient;
-                _scaledBeginPoint.Y = BeginPoint.Y / scaleCoefficient;
+                _scaledBeginPoint.X = BeginPosition.X / scaleCoefficient;
+                _scaledBeginPoint.Y = BeginPosition.Y / scaleCoefficient;
 
                 lineGeometry.StartPoint = _scaledBeginPoint;
                 lineGeometry.EndPoint = _scaledEndPoint;

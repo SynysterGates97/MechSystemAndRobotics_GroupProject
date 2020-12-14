@@ -14,6 +14,16 @@ namespace Robot_Manipulator
         //ScaleCoefficient позволит масштабировать фигуры
         public static float scaleCoefficient = 1;
 
+        public enum elementTypes
+        {
+            NULL_ELEMENT,
+            LINK,
+            JOINT,
+            INT_COORDINATES
+        }
+
+
+
         private float _weight;
 
         public float Weight
@@ -21,6 +31,24 @@ namespace Robot_Manipulator
             get { return _weight; }
             set { _weight = value; }
         }
+
+        abstract public Point BeginPosition
+        {
+            get;set;
+        }
+
+        //самотипизация
+        protected elementTypes _elementType = elementTypes.NULL_ELEMENT;
+        public elementTypes ElementType
+        {
+            get
+            {
+                return _elementType;
+            }
+        }
+
+
+
 
     }
 }

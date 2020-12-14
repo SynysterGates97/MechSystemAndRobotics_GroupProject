@@ -105,8 +105,8 @@ namespace Robot_Manipulator
                 if (selectedItemExist)
                     manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Black;
             }
-            for (int i = 0; i < manipulator.links.Count; i++)
-                canvasMain.Children.Add(manipulator.links[i]);
+            for (int i = 0; i < manipulator.elements.Count; i++)
+                canvasMain.Children.Add(manipulator.elements[i]);
 
             if(manipulator.SelectedItem != null)
                 canvasMain.Children.Add(manipulator.SelectedItem.InternalCoordinates);
@@ -182,12 +182,12 @@ namespace Robot_Manipulator
 
         private void buttonAddLink_Click(object sender, RoutedEventArgs e)
         {
-            manipulator.AddLink();
+            manipulator.AddElement();
         }
 
         private void buttonDeleteLink_Click(object sender, RoutedEventArgs e)
         {
-            manipulator.DeleteLink();
+            manipulator.DeleteLastElement();
         }
 
 

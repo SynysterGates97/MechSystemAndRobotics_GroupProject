@@ -8,12 +8,29 @@ namespace Robot_Manipulator
 {
     class Joint : ManipulatorElement
     {
-        private Point _position;
-
-        public Point Position
+        public Joint()
         {
-            get { return _position; }
-            set { _position = value; }
+            _elementType = elementTypes.JOINT;
+        }
+
+        Point _beginPosition = new Point();
+        override public Point BeginPosition
+        {
+            get
+            {
+                return _beginPosition;
+            }
+            set
+            {
+                _beginPosition = value;
+            }
+        }
+
+
+        public Joint(Point position)
+        {
+            _elementType = elementTypes.JOINT;
+            BeginPosition = position;
         }
 
         EllipseGeometry _jointGeometry = new EllipseGeometry();
@@ -22,8 +39,8 @@ namespace Robot_Manipulator
         {
             get
             {
-                _scaledBeginPoint.X = _position.X / scaleCoefficient;
-                _scaledBeginPoint.Y = _position.Y / scaleCoefficient;
+                _scaledBeginPoint.X = BeginPosition.X / scaleCoefficient;
+                _scaledBeginPoint.Y = BeginPosition.Y / scaleCoefficient;
 
                 _jointGeometry.Center = _scaledBeginPoint;
                 _jointGeometry.RadiusX = 5;
