@@ -86,13 +86,20 @@ namespace Robot_Manipulator
         public void ReRenderCanvas(ref Canvas canvas)
         {
             canvasMain.Children.Clear();
+           
 
             bool selectedItemExist = manipulator.SelectedItem != null;
 
-            if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight, canvasMain.ActualWidth))
+            Point canvasCenter = new Point(canvasMain.ActualHeight / 2,
+                canvasMain.ActualWidth / 2);
+
+            //manipulator.AlignFirstLink(canvasCenter);
+
+            if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight * CustomShape.scaleCoefficient, canvasMain.ActualWidth * CustomShape.scaleCoefficient))
             {
                 if(selectedItemExist)
                     manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Red;
+                CustomShape.scaleCoefficient += (float)0.5;
             }
             else
             {

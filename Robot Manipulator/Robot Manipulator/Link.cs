@@ -57,6 +57,7 @@ namespace Robot_Manipulator
             {
                 _begPoint = value;
                 RecalculateEndPoint();
+                RecalculateInternalCoordinates();
                 _internalCoordinatesShape.Origin = value;
             }
             get

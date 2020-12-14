@@ -28,7 +28,9 @@ namespace Robot_Manipulator
         //Это пока в рамках быстрого прототипа
         Point firstLinkBeginPoint = new Point(x: 200, y: 700);
 
+
         private Link _selectedLink;
+       
         public Link SelectedItem
         {
             get { return _selectedLink; }
@@ -77,9 +79,9 @@ namespace Robot_Manipulator
         {
             links = new ObservableCollection<Link>();
 
-            Link firstLink = new Link(firstLinkBeginPoint);
+            Link _firstLink = new Link(firstLinkBeginPoint);
 
-            links.Add(firstLink);
+            links.Add(_firstLink);
 
             OnPropertyChanged("Manipulator");
         }
@@ -122,24 +124,21 @@ namespace Robot_Manipulator
 
         }
 
-        public bool ChangeLink(ref Link selectedLink, double newAngle, double newLength)
+        public void AlignFirstLink(Point newBegin)
         {
-            int selectedLinkIndex = links.IndexOf(selectedLink);
-            if (selectedLinkIndex > 0)
+            if (links[0] != null)
             {
-
-                links[selectedLinkIndex].Angle = newAngle;
-                links[selectedLinkIndex].Length = newLength;
+                newBegin.X *= CustomShape.scaleCoefficient;
+                newBegin.Y *= CustomShape.scaleCoefficient;
+                links[0].BeginPoint = newBegin;
 
                 UpdateLinksAfterChanges();
-                OnPropertyChanged("ChangeLink");
-                return true;
+                OnPropertyChanged("AlignFirstLink");
             }
-            return false;
+
         }
         public void ChangeSelectedLinkViaNewEndPoint(Point newEnd)
         {
-
             if (SelectedItem != null)
             {
                 newEnd.X *= CustomShape.scaleCoefficient;
