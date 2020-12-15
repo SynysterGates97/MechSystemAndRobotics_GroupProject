@@ -24,13 +24,13 @@ namespace Robot_Manipulator
         const double defaultAngle = 90 * (Math.PI / 180);
         const double defaultLenght = 100;
 
-        //private InternalCoordinatesShape _internalCoordinatesShape = new InternalCoordinatesShape();
+        private InternalCoordinatesShape _internalCoordinatesShape = new InternalCoordinatesShape();
 
-        //public InternalCoordinatesShape InternalCoordinates
-        //{
-        //    get { return _internalCoordinatesShape; }
-        //    set { _internalCoordinatesShape = value; }
-        //}
+        public InternalCoordinatesShape InternalCoordinates
+        {
+            get { return _internalCoordinatesShape; }
+            set { _internalCoordinatesShape = value; }
+        }
 
 
         public Link(Point begin, double angleInRad = defaultAngle, double length = defaultLenght)
@@ -62,8 +62,8 @@ namespace Robot_Manipulator
             {
                 _beginPosition = value;
                 RecalculateEndPoint();
-                //RecalculateInternalCoordinates();
-                //_internalCoordinatesShape.Origin = value;
+                RecalculateInternalCoordinates();
+                _internalCoordinatesShape.BeginPosition = value;
             }
         }
 
@@ -80,12 +80,11 @@ namespace Robot_Manipulator
             }
         }
 
-        //private void RecalculateInternalCoordinates()
-        //{
-        //    _internalCoordinatesShape.Y = _endPoint.Y - BeginPosition.Y;
-        //    _internalCoordinatesShape.X = _endPoint.X - BeginPosition.X;
-        //}
-        //в радианах
+        private void RecalculateInternalCoordinates()
+        {
+            _internalCoordinatesShape.Y = _endPoint.Y - BeginPosition.Y;
+            _internalCoordinatesShape.X = _endPoint.X - BeginPosition.X;
+        }
         public double Angle
         {
             set
@@ -95,7 +94,7 @@ namespace Robot_Manipulator
                 _angle = value;
 
                 RecalculateEndPoint();
-                //RecalculateInternalCoordinates();
+                RecalculateInternalCoordinates();
             }
             get
             {
@@ -109,7 +108,7 @@ namespace Robot_Manipulator
             {
                  _endPoint = value;
                 RecalculateAngleAndLengthViaEndPoint(value);
-                //RecalculateInternalCoordinates();
+                RecalculateInternalCoordinates();
             }
             get
             {

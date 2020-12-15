@@ -108,8 +108,12 @@ namespace Robot_Manipulator
             for (int i = 0; i < manipulator.elements.Count; i++)
                 canvasMain.Children.Add(manipulator.elements[i]);
 
-            //if(manipulator.SelectedItem != null)
-            //    canvasMain.Children.Add(manipulator.SelectedItem.InternalCoordinates);
+            if (manipulator.SelectedItem != null && manipulator.SelectedItem.ElementType == ManipulatorElement.elementTypes.LINK)
+            {
+                Link selectedLink = (Link)manipulator.SelectedItem;
+                canvasMain.Children.Add(selectedLink.InternalCoordinates);
+            }
+                
         }
 
         private void CanvasMain_MouseLeftButtonDown_BeginLinkManipulation(object sender, MouseButtonEventArgs e)
