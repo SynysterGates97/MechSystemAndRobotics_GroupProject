@@ -61,18 +61,35 @@ namespace Robot_Manipulator
             }
         }
 
-        public bool UpdateLinksAfterChanges()
+        public bool UpdateElementsAfterChanges()
         {
-            bool islinksUpdated = false;
+            bool isElementsUpdated = false;
             for(int i = 1; i < elements.Count(); i++)
             {
-                if(elements[i-1].EndPoint != elements[1].BeginPoint)
+                if(elements[i].ElementType == ManipulatorElement.elementTypes.LINK)
                 {
-                    elements[i].BeginPoint = elements[i - 1].EndPoint;
-                    islinksUpdated = true;
+                    Link currentLink = (Link)elements[i];
+                    Joint previousJoint = (Joint)elements[i - 1];
+
+                    if(currentLink.BeginPosition != previousJoint.BeginPosition)
+                    {
+                        currentLink.BeginPosition = previousJoint.BeginPosition;
+                        isElementsUpdated = true;
+                    }
+                }
+                if (elements[i].ElementType == ManipulatorElement.elementTypes.JOINT)
+                {
+                    Joint currentJoint = (Joint)elements[i];
+                    Link previousLink = (Link)elements[i - 1];
+
+                    if (previousLink.EndPoint != currentJoint.BeginPosition)
+                    {
+                        currentJoint.BeginPosition = previousLink.EndPoint;
+                        isElementsUpdated = true;
+                    }
                 }
             }
-            return islinksUpdated;
+            return isElementsUpdated;
 
         }
         public Manipulator()
@@ -89,9 +106,9 @@ namespace Robot_Manipulator
         {
             elements = new ObservableCollection<ManipulatorElement>();
 
-            Link firstLink = new Link(begin);
+            Joint firstJoint = new Joint(begin);
 
-            elements.Add(firstLink);
+            elements.Add(firstJoint);
 
             OnPropertyChanged("Manipulator");
         }
@@ -159,23 +176,35 @@ namespace Robot_Manipulator
         //    }
 
         //}
-        public void ChangeSelectedLinkViaNewEndPoint(Point newEnd)
+        public void ChangeSelectedLinkViaNewEndPoint(Point newPosition)
         {
             if (SelectedItem != null)
             {
+                newPosition.X *= ManipulatorElement.scaleCoefficient;
+                newPosition.Y *= ManipulatorElement.scaleCoefficient;
                 switch (SelectedItem.ElementType)
                 {
                     case ManipulatorElement.elementTypes.NULL_ELEMENT:
                         break;
                     case ManipulatorElement.elementTypes.LINK:
                         {
-                            newEnd.X *= ManipulatorElement.scaleCoefficient;
-                            newEnd.Y *= ManipulatorElement.scaleCoefficient;
-                            SelectedItem.EndPoint = newEnd;
+                            Link SelectedLink = (Link)SelectedItem;
+
+                            SelectedLink.EndPoint = newPosition;
+                            UpdateElementsAfterChanges();
+                            OnPropertyChanged("ChangeLinkViaEndPoint");
                             break;
                         }
                     case ManipulatorElement.elementTypes.JOINT:
-                        break;
+                        {
+                            Joint SelectedJoint= (Joint)SelectedItem;
+
+                            SelectedJoint.BeginPosition = newPosition;
+                            UpdateElementsAfterChanges();
+                            OnPropertyChanged("ChangeLinkViaEndPoint");
+                            break;
+                        }
+                        
                     case ManipulatorElement.elementTypes.INT_COORDINATES:
                         break;
                     default:
@@ -183,24 +212,23 @@ namespace Robot_Manipulator
                 }
                 
 
-                UpdateLinksAfterChanges();
-                OnPropertyChanged("ChangeLinkViaEndPoint");
+                
             }
         }
 
-        public bool IsShapesOutOfCanvas(double canvasActualHeight, double cavasActualWidth)
-        {
-            foreach (var link in elements)
-            {
-                if (link.BeginPoint.X > cavasActualWidth || link.EndPoint.X > cavasActualWidth ||
-                    link.BeginPoint.X < 0 || link.EndPoint.X < 0)
-                    return true;
-                if (link.BeginPoint.Y > canvasActualHeight || link.EndPoint.Y > canvasActualHeight ||
-                    link.BeginPoint.Y < 0 || link.EndPoint.Y < 0)
-                    return true;
-            }
-            return false;
-        }
+        //public bool IsShapesOutOfCanvas(double canvasActualHeight, double cavasActualWidth)
+        //{
+        //    foreach (var link in elements)
+        //    {
+        //        if (link.BeginPoint.X > cavasActualWidth || link.EndPoint.X > cavasActualWidth ||
+        //            link.BeginPoint.X < 0 || link.EndPoint.X < 0)
+        //            return true;
+        //        if (link.BeginPoint.Y > canvasActualHeight || link.EndPoint.Y > canvasActualHeight ||
+        //            link.BeginPoint.Y < 0 || link.EndPoint.Y < 0)
+        //            return true;
+        //    }
+        //    return false;
+        //}
 
         protected void OnPropertyChanged(string name = null)
         {

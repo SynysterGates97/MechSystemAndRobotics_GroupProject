@@ -10,6 +10,8 @@ namespace Robot_Manipulator
     {
         public Joint()
         {
+            StrokeThickness = 10;
+            Stroke = System.Windows.Media.Brushes.Blue;
             _elementType = elementTypes.JOINT;
         }
 
@@ -29,6 +31,9 @@ namespace Robot_Manipulator
 
         public Joint(Point position)
         {
+            StrokeThickness = 10;
+            Stroke = System.Windows.Media.Brushes.Blue;
+
             _elementType = elementTypes.JOINT;
             BeginPosition = position;
         }

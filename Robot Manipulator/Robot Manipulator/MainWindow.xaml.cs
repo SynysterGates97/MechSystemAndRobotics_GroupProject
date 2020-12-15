@@ -60,16 +60,16 @@ namespace Robot_Manipulator
 
                 if (manipulator.SelectedItem != null)
                 {
-                    int currentAngle = (int)(manipulator.SelectedItem.Angle * 180 / Math.PI);
-                    int currentLength = (int)manipulator.SelectedItem.Length;
-                    int currentInternalX = (int)manipulator.SelectedItem.InternalCoordinates.X;
-                    int currentInternalY = (int)manipulator.SelectedItem.InternalCoordinates.Y;
+                    //int currentAngle = (int)(manipulator.SelectedItem.Angle * 180 / Math.PI);
+                    //int currentLength = (int)manipulator.SelectedItem.Length;
+                    //int currentInternalX = (int)manipulator.SelectedItem.InternalCoordinates.X;
+                    //int currentInternalY = (int)manipulator.SelectedItem.InternalCoordinates.Y;
 
-                    textBoxTestAngle.Text = currentAngle.ToString();
-                    textBoxTestLength.Text = currentLength.ToString();
+                    //textBoxTestAngle.Text = currentAngle.ToString();
+                    //textBoxTestLength.Text = currentLength.ToString();
 
-                    textBoxInternalX.Text = currentInternalX.ToString();
-                    textBoxInternalY.Text = currentInternalY.ToString();
+                    //textBoxInternalX.Text = currentInternalX.ToString();
+                    //textBoxInternalY.Text = currentInternalY.ToString();
                 }
 
             }
@@ -94,22 +94,22 @@ namespace Robot_Manipulator
 
             //manipulator.AlignFirstLink(canvasCenter);
 
-            if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight * ManipulatorElement.scaleCoefficient, canvasMain.ActualWidth * ManipulatorElement.scaleCoefficient))
-            {
-                if(selectedItemExist)
-                    manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Red;
-                ManipulatorElement.scaleCoefficient += (float)0.5;
-            }
-            else
-            {
-                if (selectedItemExist)
-                    manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Black;
-            }
+            //if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight * ManipulatorElement.scaleCoefficient, canvasMain.ActualWidth * ManipulatorElement.scaleCoefficient))
+            //{
+            //    if(selectedItemExist)
+            //        manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Red;
+            //    ManipulatorElement.scaleCoefficient += (float)0.5;
+            //}
+            //else
+            //{
+            //    if (selectedItemExist)
+            //        manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Black;
+            //}
             for (int i = 0; i < manipulator.elements.Count; i++)
                 canvasMain.Children.Add(manipulator.elements[i]);
 
-            if(manipulator.SelectedItem != null)
-                canvasMain.Children.Add(manipulator.SelectedItem.InternalCoordinates);
+            //if(manipulator.SelectedItem != null)
+            //    canvasMain.Children.Add(manipulator.SelectedItem.InternalCoordinates);
         }
 
         private void CanvasMain_MouseLeftButtonDown_BeginLinkManipulation(object sender, MouseButtonEventArgs e)
@@ -129,15 +129,15 @@ namespace Robot_Manipulator
         {
             try
             {
-                Link selectedBar = (Link)e.OriginalSource;
+                ManipulatorElement selectedElement = (ManipulatorElement)e.OriginalSource;
 
-                if (selectedBar == manipulator.SelectedItem)
+                if (selectedElement == manipulator.SelectedItem)
                 {
                     manipulator.SelectedItem = null;
                 }
                 else
                 {
-                    manipulator.SelectedItem = selectedBar;
+                    manipulator.SelectedItem = selectedElement;
                 }
             }
             catch(Exception)
