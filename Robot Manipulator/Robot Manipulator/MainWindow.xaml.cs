@@ -42,8 +42,23 @@ namespace Robot_Manipulator
             InitializeComponent();            
             
             canvasMain.MouseMove += CanvasMain_MouseMove_renderActive;
+            canvasMain.SizeChanged += CanvasMain_SizeChanged;
             renderingTimer.Tick += RenderingTimer_Tick;
             renderingTimer.Start();
+        }
+
+        private void CanvasMain_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            double beginX = canvasMain.ActualWidth / 2;
+            double beginY = canvasMain.ActualHeight / 2;
+
+
+            if (manipulator != null)
+            {
+                manipulator.elements[0].BeginPosition = new Point(beginX, beginY);
+                manipulator.UpdateElementsAfterChanges();
+            }
+
         }
 
         private void RenderingTimer_Tick(object sender, EventArgs e)
@@ -56,7 +71,7 @@ namespace Robot_Manipulator
             if(e.LeftButton == MouseButtonState.Pressed)
             {
                 Point currentPosition = Mouse.GetPosition(canvasMain);
-                manipulator.ChangeSelectedLinkViaNewEndPoint(currentPosition);
+                manipulator.ChangeSelectedElementViaNewEndPoint(currentPosition);
 
                 if (manipulator.SelectedItem != null)
                 {
@@ -105,6 +120,8 @@ namespace Robot_Manipulator
                 if (selectedItemExist)
                     manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Black;
             }
+
+
             for (int i = 0; i < manipulator.elements.Count; i++)
                 canvasMain.Children.Add(manipulator.elements[i]);
 
@@ -125,7 +142,7 @@ namespace Robot_Manipulator
             {
                 Point currentPosition = Mouse.GetPosition(canvasMain);
 
-                manipulator.ChangeSelectedLinkViaNewEndPoint(currentPosition);
+                manipulator.ChangeSelectedElementViaNewEndPoint(currentPosition);
             }
         }
 

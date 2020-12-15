@@ -176,7 +176,7 @@ namespace Robot_Manipulator
         //    }
 
         //}
-        public void ChangeSelectedLinkViaNewEndPoint(Point newPosition)
+        public void ChangeSelectedElementViaNewEndPoint(Point newPosition)
         {
             if (SelectedItem != null)
             {
