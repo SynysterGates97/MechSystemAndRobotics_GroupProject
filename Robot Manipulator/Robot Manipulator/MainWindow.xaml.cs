@@ -94,17 +94,17 @@ namespace Robot_Manipulator
 
             //manipulator.AlignFirstLink(canvasCenter);
 
-            //if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight * ManipulatorElement.scaleCoefficient, canvasMain.ActualWidth * ManipulatorElement.scaleCoefficient))
-            //{
-            //    if(selectedItemExist)
-            //        manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Red;
-            //    ManipulatorElement.scaleCoefficient += (float)0.5;
-            //}
-            //else
-            //{
-            //    if (selectedItemExist)
-            //        manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Black;
-            //}
+            if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight * ManipulatorElement.scaleCoefficient, canvasMain.ActualWidth * ManipulatorElement.scaleCoefficient))
+            {
+                if (selectedItemExist)
+                    manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Red;
+                ManipulatorElement.scaleCoefficient += (float)0.5;
+            }
+            else
+            {
+                if (selectedItemExist)
+                    manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Black;
+            }
             for (int i = 0; i < manipulator.elements.Count; i++)
                 canvasMain.Children.Add(manipulator.elements[i]);
 

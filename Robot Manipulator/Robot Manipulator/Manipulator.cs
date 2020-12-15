@@ -216,19 +216,30 @@ namespace Robot_Manipulator
             }
         }
 
-        //public bool IsShapesOutOfCanvas(double canvasActualHeight, double cavasActualWidth)
-        //{
-        //    foreach (var link in elements)
-        //    {
-        //        if (link.BeginPoint.X > cavasActualWidth || link.EndPoint.X > cavasActualWidth ||
-        //            link.BeginPoint.X < 0 || link.EndPoint.X < 0)
-        //            return true;
-        //        if (link.BeginPoint.Y > canvasActualHeight || link.EndPoint.Y > canvasActualHeight ||
-        //            link.BeginPoint.Y < 0 || link.EndPoint.Y < 0)
-        //            return true;
-        //    }
-        //    return false;
-        //}
+        public bool IsShapesOutOfCanvas(double canvasActualHeight, double cavasActualWidth)
+        {
+            foreach (var element in elements)
+            {
+                if (element.ElementType == ManipulatorElement.elementTypes.LINK)
+                {
+                    Link currentLink = (Link)element;
+                    if (currentLink.BeginPosition.X > cavasActualWidth || currentLink.EndPoint.X > cavasActualWidth ||
+                        currentLink.BeginPosition.X < 0 || currentLink.EndPoint.X < 0)
+                        return true;
+                    if (currentLink.BeginPosition.Y > canvasActualHeight || currentLink.EndPoint.Y > canvasActualHeight ||
+                        currentLink.BeginPosition.Y < 0 || currentLink.EndPoint.Y < 0)
+                        return true;
+                }
+                else if (element.ElementType == ManipulatorElement.elementTypes.JOINT)
+                {
+                    Joint currentJoint = (Joint)element;
+
+                    if (currentJoint.BeginPosition.X > cavasActualWidth || currentJoint.BeginPosition.Y > canvasActualHeight)
+                        return true;
+                }
+            }
+            return false;
+        }
 
         protected void OnPropertyChanged(string name = null)
         {
