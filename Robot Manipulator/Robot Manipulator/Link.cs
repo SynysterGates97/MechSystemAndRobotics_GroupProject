@@ -54,6 +54,8 @@ namespace Robot_Manipulator
         }
 
         Point _beginPosition = new Point();
+
+
         override public Point BeginPosition
         {
             get
@@ -104,7 +106,7 @@ namespace Robot_Manipulator
             }
         }
 
-        public Point EndPoint
+        public Point EndPosition
         {
             set
             {
@@ -184,8 +186,8 @@ namespace Robot_Manipulator
         {
             get
             {
-                _scaledEndPoint.X = EndPoint.X / scaleCoefficient;
-                _scaledEndPoint.Y = EndPoint.Y / scaleCoefficient;
+                _scaledEndPoint.X = EndPosition.X / scaleCoefficient;
+                _scaledEndPoint.Y = EndPosition.Y / scaleCoefficient;
 
                 _scaledBeginPoint.X = BeginPosition.X / scaleCoefficient;
                 _scaledBeginPoint.Y = BeginPosition.Y / scaleCoefficient;

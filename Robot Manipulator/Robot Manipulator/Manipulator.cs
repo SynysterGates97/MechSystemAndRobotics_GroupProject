@@ -91,9 +91,9 @@ namespace Robot_Manipulator
                     Joint currentJoint = (Joint)elements[i];
                     Link previousLink = (Link)elements[i - 1];
 
-                    if (previousLink.EndPoint != currentJoint.BeginPosition)
+                    if (previousLink.EndPosition != currentJoint.BeginPosition)
                     {
-                        currentJoint.BeginPosition = previousLink.EndPoint;
+                        currentJoint.BeginPosition = previousLink.EndPosition;
                         isElementsUpdated = true;
                     }
                 }
@@ -146,7 +146,7 @@ namespace Robot_Manipulator
         }
         private void AddJoint()
         {
-            Point newLinkBeginPoint = ((Link)elements.Last()).EndPoint;
+            Point newLinkBeginPoint = ((Link)elements.Last()).EndPosition;
 
             Joint newLink = new Joint(newLinkBeginPoint);
 
@@ -199,7 +199,7 @@ namespace Robot_Manipulator
                         {
                             Link SelectedLink = (Link)SelectedItem;
 
-                            SelectedLink.EndPoint = newPosition;
+                            SelectedLink.EndPosition = newPosition;
                             UpdateElementsAfterChanges();
                             OnPropertyChanged("ChangeLinkViaEndPoint");
                             break;
@@ -232,11 +232,11 @@ namespace Robot_Manipulator
                 if (element.ElementType == ManipulatorElement.elementTypes.LINK)
                 {
                     Link currentLink = (Link)element;
-                    if (currentLink.BeginPosition.X > cavasActualWidth || currentLink.EndPoint.X > cavasActualWidth ||
-                        currentLink.BeginPosition.X < 0 || currentLink.EndPoint.X < 0)
+                    if (currentLink.BeginPosition.X > cavasActualWidth || currentLink.EndPosition.X > cavasActualWidth ||
+                        currentLink.BeginPosition.X < 0 || currentLink.EndPosition.X < 0)
                         return true;
-                    if (currentLink.BeginPosition.Y > canvasActualHeight || currentLink.EndPoint.Y > canvasActualHeight ||
-                        currentLink.BeginPosition.Y < 0 || currentLink.EndPoint.Y < 0)
+                    if (currentLink.BeginPosition.Y > canvasActualHeight || currentLink.EndPosition.Y > canvasActualHeight ||
+                        currentLink.BeginPosition.Y < 0 || currentLink.EndPosition.Y < 0)
                         return true;
                 }
                 else if (element.ElementType == ManipulatorElement.elementTypes.JOINT)
