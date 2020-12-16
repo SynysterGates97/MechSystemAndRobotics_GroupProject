@@ -61,6 +61,15 @@ namespace Robot_Manipulator
             }
         }
 
+        public void CenterFirstElement(Point newCenter)
+        {
+            if (elements != null)
+            {
+                elements[0].BeginPosition = newCenter;
+                UpdateElementsAfterChanges();
+                //OnPropertyChanged("CenterFirstElement");
+            }
+        }
         public bool UpdateElementsAfterChanges()
         {
             bool isElementsUpdated = false;

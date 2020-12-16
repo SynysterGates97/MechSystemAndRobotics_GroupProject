@@ -39,6 +39,7 @@ namespace Robot_Manipulator
             BeginPosition = begin;
             Angle = angleInRad;
             Length = length;
+            Weight = 20;
 
             Stroke = System.Windows.Media.Brushes.Blue;
             StrokeThickness = 10;
@@ -47,6 +48,7 @@ namespace Robot_Manipulator
         public Link()
         {
             _elementType = elementTypes.LINK;
+            Weight = 20;
             Stroke = System.Windows.Media.Brushes.Blue;
             StrokeThickness = 10;
         }
