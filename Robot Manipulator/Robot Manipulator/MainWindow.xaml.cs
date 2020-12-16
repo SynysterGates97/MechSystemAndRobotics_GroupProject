@@ -45,7 +45,21 @@ namespace Robot_Manipulator
             canvasMain.SizeChanged += CanvasMain_SizeChanged;
             renderingTimer.Tick += RenderingTimer_Tick;
             renderingTimer.Start();
+
+            textBoxWeight.TextChanged += TextBoxWeight_TextChanged;
         }
+
+        private void TextBoxWeight_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //Работает, но для изменения угла, такое не пройдет
+            if(manipulator != null && manipulator.elements != null)
+            {
+                float newWeightValue = float.Parse(textBoxWeight.Text);
+                
+                manipulator.SelectedItem.Weight = newWeightValue;
+            }
+        }
+
 
         private void CanvasMain_SizeChanged(object sender, SizeChangedEventArgs e)
         {
