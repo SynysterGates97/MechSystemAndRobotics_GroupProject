@@ -28,6 +28,54 @@ namespace Robot_Manipulator
         //Это пока в рамках быстрого прототипа
         Point firstJointBeginPoint = new Point(x: 200, y: 700);
 
+        private CenterOfMass _centerOfMass = new CenterOfMass();
+
+
+        public CenterOfMass GetCenterOfMass()
+        {
+            float totalWeight = 0;
+            double xCentOfMass = 0;
+            double yCentOfMass = 0;
+            if (elements != null)
+            {
+                foreach (var element in elements)
+                {
+                    totalWeight += element.Weight;
+                }
+
+
+
+                foreach (var element in elements)
+                {
+                    if (element.ElementType == ManipulatorElement.elementTypes.LINK)
+                    {
+                        Link link = (Link)element;
+
+                        double xCenterOfLink = (link.BeginPosition.X + link.EndPosition.X) / 2;
+                        double yCenterOfLink = (link.BeginPosition.Y + link.EndPosition.Y) / 2;
+
+                        xCentOfMass += xCenterOfLink * link.Weight;
+                        yCentOfMass += yCenterOfLink * link.Weight;
+
+                    }
+                    else if (element.ElementType == ManipulatorElement.elementTypes.JOINT)
+                    {
+                        Joint joint = (Joint)element;
+
+                        xCentOfMass += joint.BeginPosition.X * joint.Weight;
+                        yCentOfMass += joint.BeginPosition.Y * joint.Weight;
+                    }
+                }
+                xCentOfMass /= totalWeight;
+                yCentOfMass /= totalWeight;
+
+                _centerOfMass.BeginPosition = new Point(xCentOfMass, yCentOfMass);//Ну выделяется и выделяется
+            }
+
+            return _centerOfMass;
+
+        }
+
 
         private ManipulatorElement _selectedElement;
        
@@ -254,11 +302,6 @@ namespace Robot_Manipulator
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
-
-
-
-
 
     }
 }

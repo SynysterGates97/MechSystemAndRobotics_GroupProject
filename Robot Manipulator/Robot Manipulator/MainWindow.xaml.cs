@@ -149,6 +149,8 @@ namespace Robot_Manipulator
                     manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Black;
             }
 
+
+
             canvasMain.Children.Clear();
 
             for (int i = 0; i < manipulator.elements.Count; i++)
@@ -159,6 +161,8 @@ namespace Robot_Manipulator
                 Link selectedLink = (Link)manipulator.SelectedItem;
                 canvasMain.Children.Add(selectedLink.InternalCoordinates);
             }
+            canvasMain.Children.Add(manipulator.GetCenterOfMass());
+            
         }
 
         private void CanvasMain_MouseLeftButtonDown_BeginLinkManipulation(object sender, MouseButtonEventArgs e)

@@ -19,7 +19,8 @@ namespace Robot_Manipulator
             NULL_ELEMENT,
             LINK,
             JOINT,
-            INT_COORDINATES
+            INT_COORDINATES,
+            CENTER_OF_MASS
         }
 
 
