@@ -12,7 +12,7 @@ namespace Robot_Manipulator
     {
         public CenterOfMass()
         {
-            StrokeThickness = 10;
+            StrokeThickness = 5;
             Stroke = System.Windows.Media.Brushes.Yellow;
             _elementType = elementTypes.CENTER_OF_MASS;
         }
@@ -33,10 +33,10 @@ namespace Robot_Manipulator
 
         public CenterOfMass(Point position)
         {
-            StrokeThickness = 10;
-            Stroke = System.Windows.Media.Brushes.Blue;
+            StrokeThickness = 5;
+            Stroke = System.Windows.Media.Brushes.Yellow;
 
-            _elementType = elementTypes.JOINT;
+            _elementType = elementTypes.CENTER_OF_MASS;
             BeginPosition = position;
         }
 
@@ -50,8 +50,8 @@ namespace Robot_Manipulator
                 _scaledBeginPosition.Y = BeginPosition.Y / scaleCoefficient;
 
                 _centerMassGeometry.Center = _scaledBeginPosition;
-                _centerMassGeometry.RadiusX = 5;
-                _centerMassGeometry.RadiusY = 5;
+                _centerMassGeometry.RadiusX = 3;
+                _centerMassGeometry.RadiusY = 3;
 
                 return _centerMassGeometry;
             }
