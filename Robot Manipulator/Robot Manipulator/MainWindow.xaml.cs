@@ -183,14 +183,16 @@ namespace Robot_Manipulator
             try
             {
                 ManipulatorElement selectedElement = (ManipulatorElement)e.OriginalSource;
-
-                if (selectedElement == manipulator.SelectedItem)
+                if (selectedElement.ElementType != ManipulatorElement.elementTypes.CENTER_OF_MASS)
                 {
-                    manipulator.SelectedItem = null;
-                }
-                else
-                {
-                    manipulator.SelectedItem = selectedElement;
+                    if (selectedElement == manipulator.SelectedItem)
+                    {
+                        manipulator.SelectedItem = null;
+                    }
+                    else
+                    {
+                        manipulator.SelectedItem = selectedElement;
+                    }
                 }
             }
             catch(Exception)
