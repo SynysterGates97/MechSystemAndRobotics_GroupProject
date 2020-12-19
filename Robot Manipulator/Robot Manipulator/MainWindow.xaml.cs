@@ -133,9 +133,11 @@ namespace Robot_Manipulator
                 CenterOfMass centerOfMass = manipulator.GetCenterOfMass();
                 bool selectedItemExist = UpdateSelectedViewInfo(centerOfMass);
 
+                int centOfMassXVal = (int)((centerOfMass.BeginPosition.X - manipulator.elements[0].BeginPosition.X));
+                int centOfMassYVal = (int)((-centerOfMass.BeginPosition.Y + manipulator.elements[0].BeginPosition.Y));
 
-                textBoxCenterOfMassX.Text = (centerOfMass.BeginPosition.X - manipulator.elements[0].BeginPosition.X).ToString();
-                textBoxCenterOfMassY.Text = (-centerOfMass.BeginPosition.Y + manipulator.elements[0].BeginPosition.Y).ToString();
+                textBoxCenterOfMassX.Text = centOfMassXVal.ToString();
+                textBoxCenterOfMassY.Text = centOfMassYVal.ToString();
 
                 double beginX = canvasMain.ActualWidth / 2 * ManipulatorElement.scaleCoefficient;
                 double beginY = canvasMain.ActualHeight / 2 * ManipulatorElement.scaleCoefficient;
@@ -250,11 +252,11 @@ namespace Robot_Manipulator
 
             if (e.Delta > 0)
             {
-                ManipulatorElement.scaleCoefficient += ScaleRate;
+                ManipulatorElement.scaleCoefficient -= ScaleRate;
             }
             else
             {
-                ManipulatorElement.scaleCoefficient -= ScaleRate;
+                ManipulatorElement.scaleCoefficient += ScaleRate;
             }
 
 
