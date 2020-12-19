@@ -22,8 +22,8 @@
             </Grid.RowDefinitions>
             <TextBox x:Name="textBoxTestAngle" HorizontalAlignment="Left" Margin="10,77,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
             <TextBox x:Name="textBoxTestLength" HorizontalAlignment="Left" Margin="10,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
-            <Button x:Name="buttonAddLink" Content="Add new element" Margin="10,209,10,0" VerticalAlignment="Top" Click="buttonAddLink_Click" Height="28"/>
-            <Button x:Name="buttonDeleteLink" Content="Delete selected element" Margin="10,251,10,0" VerticalAlignment="Top" Click="buttonDeleteLink_Click" Height="29"/>
+            <Button x:Name="buttonAddLink" Content="Add new element" Margin="10,270,10,0" VerticalAlignment="Top" Click="buttonAddLink_Click" Height="28"/>
+            <Button x:Name="buttonDeleteLink" Content="Delete selected element" Margin="10,315,10,0" VerticalAlignment="Top" Click="buttonDeleteLink_Click" Height="29"/>
             <TextBox x:Name="textBoxInternalX" HorizontalAlignment="Left" Margin="10,123,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
             <TextBox x:Name="textBoxInternalY" HorizontalAlignment="Left" Margin="10,146,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
             <Label x:Name="label" Content="Angel&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,77,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
@@ -32,6 +32,10 @@
             <Label x:Name="label_Copy2" Content="Yint&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,146,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
             <TextBox x:Name="textBoxWeight" HorizontalAlignment="Left" Margin="10,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="16"/>
             <Label x:Name="label_Copy3" Content="Weight&#xA;" HorizontalAlignment="Left" Margin="57,169,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
+            <TextBox x:Name="textBoxCenterOfMassX" HorizontalAlignment="Left" Margin="10,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="16"/>
+            <TextBox x:Name="textBoxCenterOfMassY" HorizontalAlignment="Left" Margin="10,211,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="16"/>
+            <Label x:Name="label_Copy4" Content="CentOfMassX&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,190,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
+            <Label x:Name="label_Copy5" Content="CentOfMassY&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,210,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
         </Grid>
         <Canvas  x:Name="canvasMain"  Margin="3,5,10,10" Background="LightGray"
                  MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown_BeginLinkManipulation" 

@@ -48,6 +48,8 @@ namespace Robot_Manipulator
 
             textBoxTestAngle.PreviewTextInput += OnInpuTextboxestInputPrewiew;
             textBoxTestLength.PreviewTextInput += OnInpuTextboxestInputPrewiew;
+            textBoxWeight.PreviewTextInput += OnInpuTextboxestInputPrewiew;
+            
         }
 
         private void OnInpuTextboxestInputPrewiew(object sender, TextCompositionEventArgs e)
@@ -124,11 +126,16 @@ namespace Robot_Manipulator
 
         //Если не будет привязки придется дергать её1
         public void ReRenderCanvas(ref Canvas canvas)
-        {                                 
-            
+        {
+
             if (manipulator != null)
             {
-                bool selectedItemExist = UpdateSelectedViewInfo();
+                CenterOfMass centerOfMass = manipulator.GetCenterOfMass();
+                bool selectedItemExist = UpdateSelectedViewInfo(centerOfMass);
+
+
+                textBoxCenterOfMassX.Text = (centerOfMass.BeginPosition.X - manipulator.elements[0].BeginPosition.X).ToString();
+                textBoxCenterOfMassY.Text = (-centerOfMass.BeginPosition.Y + manipulator.elements[0].BeginPosition.Y).ToString();
 
                 double beginX = canvasMain.ActualWidth / 2 * ManipulatorElement.scaleCoefficient;
                 double beginY = canvasMain.ActualHeight / 2 * ManipulatorElement.scaleCoefficient;
@@ -147,23 +154,24 @@ namespace Robot_Manipulator
                     if (selectedItemExist)
                         manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Black;
                 }
+
+                canvasMain.Children.Clear();
+
+                for (int i = 0; i < manipulator.elements.Count; i++)
+                    canvasMain.Children.Add(manipulator.elements[i]);
+
+                if (manipulator.SelectedItem != null && manipulator.SelectedItem.ElementType == ManipulatorElement.elementTypes.LINK)
+                {
+                    Link selectedLink = (Link)manipulator.SelectedItem;
+                    canvasMain.Children.Add(selectedLink.InternalCoordinates);
+                }
+                canvasMain.Children.Add(centerOfMass);
             }
-
-            canvasMain.Children.Clear();
-
-            for (int i = 0; i < manipulator.elements.Count; i++)
-                canvasMain.Children.Add(manipulator.elements[i]);
-
-            if (manipulator.SelectedItem != null && manipulator.SelectedItem.ElementType == ManipulatorElement.elementTypes.LINK)
-            {
-                Link selectedLink = (Link)manipulator.SelectedItem;
-                canvasMain.Children.Add(selectedLink.InternalCoordinates);
-            }
-            canvasMain.Children.Add(manipulator.GetCenterOfMass());
             
         }
 
-        private bool UpdateSelectedViewInfo()
+        //Сделал неочевидную передачу параметра, чтобы не пересчитывать центр масс
+        private bool UpdateSelectedViewInfo(CenterOfMass centerOfMass)
         {
             bool selectedItemExist = manipulator.SelectedItem != null;
 
@@ -189,7 +197,8 @@ namespace Robot_Manipulator
 
                 textBoxInternalX.Text = currentInternalX.ToString();
                 textBoxInternalY.Text = currentInternalY.ToString();
-                textBoxWeight.Text = currentWeight.ToString();                
+                textBoxWeight.Text = currentWeight.ToString();
+
             }
             return selectedItemExist;
         }

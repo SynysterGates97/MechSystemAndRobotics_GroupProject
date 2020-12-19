@@ -19,13 +19,6 @@ namespace Robot_Manipulator
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //const System.Windows.Media.Brushes defaultBrush = System.Windows.Media.Brushes.Blue;
-
-        //Todo: Нужно подумать, может стоит сразу оперировать с градусами
-
-
-        //TODO: Нужно как-то высчитывать начальную точку, или подгонять полотно под нее
-        //Это пока в рамках быстрого прототипа
         Point firstJointBeginPoint = new Point(x: 200, y: 700);
 
         private CenterOfMass _centerOfMass = new CenterOfMass();
