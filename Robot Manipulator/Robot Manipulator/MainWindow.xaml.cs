@@ -85,31 +85,6 @@ namespace Robot_Manipulator
                 Point currentPosition = Mouse.GetPosition(canvasMain);
                 manipulator.ChangeSelectedElementViaNewEndPoint(currentPosition);
 
-                if (manipulator.SelectedItem != null)
-                {
-                    int currentAngle  = 0;
-                    int currentLength = 0;
-                    int currentInternalX = 0;
-                    int currentInternalY = 0;
-                    float currentWeight = manipulator.SelectedItem.Weight;
-
-                    if (manipulator.SelectedItem.ElementType == ManipulatorElement.elementTypes.LINK)
-                    {
-                        Link selectedLink = (Link)manipulator.SelectedItem;
-                        currentAngle = (int)(selectedLink.Angle * 180 / Math.PI);
-                        currentLength = (int)selectedLink.Length;
-                        currentInternalX = (int)selectedLink.InternalCoordinates.X;
-                        currentInternalY = (int)selectedLink.InternalCoordinates.Y;
-                    }
-
-                    textBoxTestAngle.Text = currentAngle.ToString();
-                    textBoxTestLength.Text = currentLength.ToString();
-
-                    textBoxInternalX.Text = currentInternalX.ToString();
-                    textBoxInternalY.Text = currentInternalY.ToString();
-                    textBoxWeight.Text = currentWeight.ToString();
-                }
-
             }
         }
 
@@ -121,35 +96,30 @@ namespace Robot_Manipulator
 
         //Если не будет привязки придется дергать её1
         public void ReRenderCanvas(ref Canvas canvas)
-        {
-                      
-
-            bool selectedItemExist = manipulator.SelectedItem != null;
-
-            //manipulator.AlignFirstLink(canvasCenter);
-
-            double beginX = canvasMain.ActualWidth / 2 * ManipulatorElement.scaleCoefficient;
-            double beginY = canvasMain.ActualHeight / 2 * ManipulatorElement.scaleCoefficient;
-
+        {                                 
+            
             if (manipulator != null)
             {
+                bool selectedItemExist = UpdateSelectedViewInfo();
+
+                double beginX = canvasMain.ActualWidth / 2 * ManipulatorElement.scaleCoefficient;
+                double beginY = canvasMain.ActualHeight / 2 * ManipulatorElement.scaleCoefficient;
+
                 manipulator.CenterFirstElement(new Point(beginX, beginY));
+
+                if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight * ManipulatorElement.scaleCoefficient, canvasMain.ActualWidth * ManipulatorElement.scaleCoefficient))
+                {
+                    if (selectedItemExist)
+                        manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Red;
+                    ManipulatorElement.scaleCoefficient += (float)0.5;
+
+                }
+                else
+                {
+                    if (selectedItemExist)
+                        manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Black;
+                }
             }
-
-            if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight * ManipulatorElement.scaleCoefficient, canvasMain.ActualWidth * ManipulatorElement.scaleCoefficient))
-            {
-                if (selectedItemExist)
-                    manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Red;
-                ManipulatorElement.scaleCoefficient += (float)0.5;
-
-            }
-            else
-            {
-                if (selectedItemExist)
-                    manipulator.SelectedItem.Stroke = System.Windows.Media.Brushes.Black;
-            }
-
-
 
             canvasMain.Children.Clear();
 
@@ -163,6 +133,37 @@ namespace Robot_Manipulator
             }
             canvasMain.Children.Add(manipulator.GetCenterOfMass());
             
+        }
+
+        private bool UpdateSelectedViewInfo()
+        {
+            bool selectedItemExist = manipulator.SelectedItem != null;
+
+            if (selectedItemExist)
+            {
+                int currentAngle = 0;
+                int currentLength = 0;
+                int currentInternalX = 0;
+                int currentInternalY = 0;
+                float currentWeight = manipulator.SelectedItem.Weight;
+
+                if (manipulator.SelectedItem.ElementType == ManipulatorElement.elementTypes.LINK)
+                {
+                    Link selectedLink = (Link)manipulator.SelectedItem;
+                    currentAngle = (int)(selectedLink.Angle * 180 / Math.PI);
+                    currentLength = (int)selectedLink.Length;
+                    currentInternalX = (int)selectedLink.InternalCoordinates.X;
+                    currentInternalY = (int)-selectedLink.InternalCoordinates.Y;
+                }
+
+                textBoxTestAngle.Text = currentAngle.ToString();
+                textBoxTestLength.Text = currentLength.ToString();
+
+                textBoxInternalX.Text = currentInternalX.ToString();
+                textBoxInternalY.Text = currentInternalY.ToString();
+                textBoxWeight.Text = currentWeight.ToString();                
+            }
+            return selectedItemExist;
         }
 
         private void CanvasMain_MouseLeftButtonDown_BeginLinkManipulation(object sender, MouseButtonEventArgs e)
