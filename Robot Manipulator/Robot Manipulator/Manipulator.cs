@@ -9,6 +9,8 @@ using System.Windows;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace Robot_Manipulator
 {
@@ -100,6 +102,93 @@ namespace Robot_Manipulator
 
                 OnPropertyChanged("SelectedItem");
             }
+        }
+
+        private bool GetIntersectionPoints(Geometry g1, Geometry g2)
+        {
+            Geometry og1 = g1.GetWidenedPathGeometry(new Pen(Brushes.Black, 1.0));
+            Geometry og2 = g2.GetWidenedPathGeometry(new Pen(Brushes.Black, 1.0));
+            CombinedGeometry cg = new CombinedGeometry(GeometryCombineMode.Intersect, og1, og2);
+            PathGeometry pg = cg.GetFlattenedPathGeometry();
+            Point[] interconnPoints = new Point[pg.Figures.Count];
+
+            for (int i = 0; i < pg.Figures.Count; i++)
+            {
+                Rect fig = new PathGeometry(new PathFigure[] { pg.Figures[i] }).Bounds;
+                interconnPoints[i] = new Point(fig.Left + fig.Width / 2.0, fig.Top + fig.Height / 2.0);
+            }
+            return interconnPoints.Count() > 0;
+        }
+
+        public bool GetLinksFromElements(ref List<Link> listOfLinks)
+        {
+            bool result = false;
+            foreach (var element in elements)
+            {
+                if (element.ElementType == ManipulatorElement.elementTypes.LINK)
+                {
+                    listOfLinks.Add((Link)element);
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+
+
+        bool IsThereAnyIntersections()
+        {
+            bool result = false;
+
+            List<Link> listOfLinks = new List<Link>();
+
+            if (GetLinksFromElements(ref listOfLinks))
+            {
+                List<Polyline> listOfRectZones = new List<Polyline>();
+                listOfRectZones = GetRectangleZonesOfElements(listOfLinks);
+
+                //GetIntersectionPoints();
+                for (int xLink_i = 0; xLink_i < listOfLinks.Count; xLink_i++)
+                {
+                    
+
+                    //const double precision = 0.1;
+                    //for (double x_i = listOfLinks[xLink_i].BeginPosition.X; x_i <= listOfLinks[xLink_i].EndPosition.X; x_i += precision)
+                    //{
+
+                    //    for (double y_i = listOfLinks[xLink_i].BeginPosition.Y; y_i <= listOfLinks[xLink_i].EndPosition.Y; y_i += precision)
+                    //    {
+                    //        for (int yLink_i = 0; yLink_i < listOfLinks.Count; yLink_i++)
+                    //        {
+
+                    //        }
+                    //    }
+                }
+            }
+            return result;
+        }
+
+        public List<Polyline> GetRectangleZonesOfElements(List<Link> listOfLinks)
+        {
+            List<Polyline> resultList = new List<Polyline>();
+
+            foreach (var link in listOfLinks)
+            {
+                Point point0 = link.BeginPosition;
+                Point point1 = new Point(link.EndPosition.X, link.BeginPosition.Y);
+                Point point2 = link.EndPosition;
+                Point point3 = new Point(link.BeginPosition.X, link.EndPosition.Y);
+
+                Point[] pointArray = { point0, point1, point2, point3 };
+                System.Windows.Media.PointCollection areasPoints = new PointCollection(pointArray);
+
+
+                Polyline rectangle = new Polyline();
+                rectangle.Points = areasPoints;
+
+                resultList.Add(rectangle);
+            }
+            return resultList;
         }
 
         public void CenterFirstElement(Point newCenter)
