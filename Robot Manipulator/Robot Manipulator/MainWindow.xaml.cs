@@ -46,18 +46,46 @@ namespace Robot_Manipulator
             renderingTimer.Tick += RenderingTimer_Tick;
             renderingTimer.Start();
 
-            textBoxWeight.TextChanged += TextBoxWeight_TextChanged;
+            textBoxTestAngle.PreviewTextInput += OnInpuTextboxestInputPrewiew;
+            textBoxTestLength.PreviewTextInput += OnInpuTextboxestInputPrewiew;
         }
 
-        private void TextBoxWeight_TextChanged(object sender, TextChangedEventArgs e)
+        private void OnInpuTextboxestInputPrewiew(object sender, TextCompositionEventArgs e)
         {
-            //Работает, но для изменения угла, такое не пройдет
-            if(manipulator != null && manipulator.elements != null)
+            TextBox textBox = (TextBox)sender;
+            textBox.TextChanged += TextBox_TextChanged;
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (manipulator != null && manipulator.SelectedItem != null)
             {
-                float newWeightValue = float.Parse(textBoxWeight.Text);
+                try
+                {
+                    float newWeightValue = float.Parse(textBoxWeight.Text);
+                    double newAngleValue = double.Parse(textBoxTestAngle.Text);
+                    double newLengthValue = double.Parse(textBoxTestLength.Text);
+
+                    if (manipulator.SelectedItem.ElementType == ManipulatorElement.elementTypes.LINK)
+                    {
+                        Link selectedLink = (Link)manipulator.SelectedItem;
+
+                        selectedLink.Length = newLengthValue;
+                        selectedLink.Angle = newAngleValue * Math.PI / 180;
+                    }
+                    manipulator.SelectedItem.Weight = newWeightValue;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Поле принимает только цифры");
+                }
+
                 
-                manipulator.SelectedItem.Weight = newWeightValue;
             }
+
+
+            TextBox textBox = (TextBox)sender;
+            textBox.TextChanged -= TextBox_TextChanged;
         }
 
 
