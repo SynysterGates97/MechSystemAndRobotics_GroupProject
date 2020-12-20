@@ -18,7 +18,8 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="2" Grid.RowSpan="2" Height="541" VerticalAlignment="Top">
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="444*"/>
+                <RowDefinition Height="97*"/>
             </Grid.RowDefinitions>
             <TextBox x:Name="textBoxTestAngle" HorizontalAlignment="Left" Margin="10,77,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
             <TextBox x:Name="textBoxTestLength" HorizontalAlignment="Left" Margin="10,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
@@ -36,6 +37,7 @@
             <TextBox x:Name="textBoxCenterOfMassY" HorizontalAlignment="Left" Margin="10,211,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="16"/>
             <Label x:Name="label_Copy4" Content="CentOfMassX&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,190,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
             <Label x:Name="label_Copy5" Content="CentOfMassY&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,210,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
+            <Button x:Name="buttonSave" Content="Save" HorizontalAlignment="Left" Margin="10,359,0,0" VerticalAlignment="Top" Click="buttonSave_Click"/>
         </Grid>
         <Canvas  x:Name="canvasMain"  Margin="3,5,10,10" Background="LightGray"
                  MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown_BeginLinkManipulation" 

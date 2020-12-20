@@ -14,6 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Text.Json;
+
+using Robot_Manipulator.JSON;
 
 namespace Robot_Manipulator
 {
@@ -305,6 +308,28 @@ namespace Robot_Manipulator
         private void canvasMain_MouseLeftButtonUp_StopLinkManipulation(object sender, MouseButtonEventArgs e)
         {
             //cancelTokenSource.Cancel();
+        }
+
+        private void buttonSave_Click(object sender, RoutedEventArgs e)
+        {
+            //for (int i = 0; i < manipulator.elements.Count(); i++)
+            //{
+
+            //}
+
+                foreach (var item in manipulator.elements)
+                {
+                    if(item.ElementType == ManipulatorElement.elementTypes.LINK)
+                    {
+                        LinkSerialized linkSerialized = new LinkSerialized((Link)item);
+
+                        string json = JsonSerializer.Serialize<LinkSerialized>(linkSerialized);
+                        //JsonSerializer.WriteWhitespace(Environment.NewLine);
+                        MessageBox.Show(json);
+                    }
+
+                }
+            
         }
     }
 }
