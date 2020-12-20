@@ -134,61 +134,6 @@ namespace Robot_Manipulator
             return result;
         }
 
-        bool get_line_intersection(Point firstLineBegin, Point firstLineEnd, Point secondLineBegin, Point secondLineEnd/*, ref Point interconnetion*/)
-        {
-            double s1_x = firstLineEnd.X - firstLineBegin.X; 
-            double s1_y = firstLineEnd.Y - firstLineBegin.Y;
-            double s2_x = secondLineEnd.X - secondLineBegin.X; 
-            double s2_y = secondLineEnd.Y - secondLineBegin.Y;
-
-            double s, t;
-            s = (-s1_y * (firstLineBegin.X - secondLineBegin.X) + s1_x * (firstLineBegin.Y - secondLineBegin.Y)) / (-secondLineBegin.X * firstLineEnd.Y + firstLineEnd.X * secondLineBegin.Y);
-            t = (s2_x * (firstLineBegin.Y - secondLineBegin.Y) - s2_y * (firstLineBegin.X - secondLineBegin.X)) / (-secondLineBegin.X * firstLineEnd.Y + firstLineEnd.X * secondLineBegin.Y);
-
-            if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
-            {
-                //// Collision detected
-                //interconnetion.X = firstLineBegin.X + (t * s1_x);
-                //interconnetion.Y = firstLineBegin.Y + (t * s1_y);
-                return true;
-            }
-
-            return true; // No collision
-        }
-
-        bool get_line_intersection_2(double p0_x, double p0_y, double p1_x, double p1_y,
-            double p2_x, double p2_y, double p3_x, double p3_y)
-        {
-            double s02_x, s02_y, s10_x, s10_y, s32_x, s32_y, s_numer, t_numer, denom, t;
-            s10_x = p1_x - p0_x;
-            s10_y = p1_y - p0_y;
-            s32_x = p3_x - p2_x;
-            s32_y = p3_y - p2_y;
-
-            denom = s10_x * s32_y - s32_x * s10_y;
-            //if (denom == 0)
-            //    return false ; // Collinear
-            bool denomPositive = denom > 0;
-
-            s02_x = p0_x - p2_x;
-            s02_y = p0_y - p2_y;
-            s_numer = s10_x * s02_y - s10_y * s02_x;
-            if ((s_numer < 0) == denomPositive)
-                return false; // No collision
-
-            t_numer = s32_x * s02_y - s32_y * s02_x;
-            if ((t_numer < 0) == denomPositive)
-                return false; // No collision
-
-            if (((s_numer > denom) == denomPositive) || ((t_numer > denom) == denomPositive))
-                return false; // No collision
-                          // Collision detected
-            t = t_numer / denom;
-
-            return true;
-        }
-
-
         public bool IsThereAnyIntersections()
         {
             bool result = false;
@@ -202,10 +147,12 @@ namespace Robot_Manipulator
 
                 if (listOfRectZones.Count == 3)
                 {
-                    bool ka = get_line_intersection_2(listOfLinks[0].BeginPosition.X, listOfLinks[0].BeginPosition.Y, 
-                                                    listOfLinks[0].EndPosition.X, listOfLinks[0].EndPosition.Y,
-                                                    listOfLinks[2].BeginPosition.X, listOfLinks[2].BeginPosition.Y,
-                                                    listOfLinks[2].EndPosition.X, listOfLinks[2].EndPosition.Y);
+                    bool ka = IntersectDetecor.IsIntersected(listOfLinks[0], listOfLinks[2]);
+
+                    //bool ka = get_line_intersection_2(listOfLinks[0].BeginPosition.X, listOfLinks[0].BeginPosition.Y, 
+                    //                                listOfLinks[0].EndPosition.X, listOfLinks[0].EndPosition.Y,
+                    //                                listOfLinks[2].BeginPosition.X, listOfLinks[2].BeginPosition.Y,
+                    //                                listOfLinks[2].EndPosition.X, listOfLinks[2].EndPosition.Y);
                     if(ka)
                     {
                         MessageBox.Show("Test");
