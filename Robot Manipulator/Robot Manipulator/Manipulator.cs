@@ -104,7 +104,7 @@ namespace Robot_Manipulator
             }
         }
 
-        private bool GetIntersectionPoints(Geometry g1, Geometry g2)
+        private bool IsTwoFiguresInterconnected(Geometry g1, Geometry g2)
         {
             Geometry og1 = g1.GetWidenedPathGeometry(new Pen(Brushes.Black, 1.0));
             Geometry og2 = g2.GetWidenedPathGeometry(new Pen(Brushes.Black, 1.0));
@@ -134,9 +134,62 @@ namespace Robot_Manipulator
             return result;
         }
 
+        bool get_line_intersection(Point firstLineBegin, Point firstLineEnd, Point secondLineBegin, Point secondLineEnd/*, ref Point interconnetion*/)
+        {
+            double s1_x = firstLineEnd.X - firstLineBegin.X; 
+            double s1_y = firstLineEnd.Y - firstLineBegin.Y;
+            double s2_x = secondLineEnd.X - secondLineBegin.X; 
+            double s2_y = secondLineEnd.Y - secondLineBegin.Y;
+
+            double s, t;
+            s = (-s1_y * (firstLineBegin.X - secondLineBegin.X) + s1_x * (firstLineBegin.Y - secondLineBegin.Y)) / (-secondLineBegin.X * firstLineEnd.Y + firstLineEnd.X * secondLineBegin.Y);
+            t = (s2_x * (firstLineBegin.Y - secondLineBegin.Y) - s2_y * (firstLineBegin.X - secondLineBegin.X)) / (-secondLineBegin.X * firstLineEnd.Y + firstLineEnd.X * secondLineBegin.Y);
+
+            if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+            {
+                //// Collision detected
+                //interconnetion.X = firstLineBegin.X + (t * s1_x);
+                //interconnetion.Y = firstLineBegin.Y + (t * s1_y);
+                return true;
+            }
+
+            return true; // No collision
+        }
+
+        bool get_line_intersection_2(double p0_x, double p0_y, double p1_x, double p1_y,
+            double p2_x, double p2_y, double p3_x, double p3_y)
+        {
+            double s02_x, s02_y, s10_x, s10_y, s32_x, s32_y, s_numer, t_numer, denom, t;
+            s10_x = p1_x - p0_x;
+            s10_y = p1_y - p0_y;
+            s32_x = p3_x - p2_x;
+            s32_y = p3_y - p2_y;
+
+            denom = s10_x * s32_y - s32_x * s10_y;
+            //if (denom == 0)
+            //    return false ; // Collinear
+            bool denomPositive = denom > 0;
+
+            s02_x = p0_x - p2_x;
+            s02_y = p0_y - p2_y;
+            s_numer = s10_x * s02_y - s10_y * s02_x;
+            if ((s_numer < 0) == denomPositive)
+                return false; // No collision
+
+            t_numer = s32_x * s02_y - s32_y * s02_x;
+            if ((t_numer < 0) == denomPositive)
+                return false; // No collision
+
+            if (((s_numer > denom) == denomPositive) || ((t_numer > denom) == denomPositive))
+                return false; // No collision
+                          // Collision detected
+            t = t_numer / denom;
+
+            return true;
+        }
 
 
-        bool IsThereAnyIntersections()
+        public bool IsThereAnyIntersections()
         {
             bool result = false;
 
@@ -144,10 +197,20 @@ namespace Robot_Manipulator
 
             if (GetLinksFromElements(ref listOfLinks))
             {
-                List<Polyline> listOfRectZones = new List<Polyline>();
+                List<Link> listOfRectZones = new List<Link>();
                 listOfRectZones = GetRectangleZonesOfElements(listOfLinks);
 
-                //GetIntersectionPoints();
+                if (listOfRectZones.Count == 3)
+                {
+                    bool ka = get_line_intersection_2(listOfLinks[0].BeginPosition.X, listOfLinks[0].BeginPosition.Y, 
+                                                    listOfLinks[0].EndPosition.X, listOfLinks[0].EndPosition.Y,
+                                                    listOfLinks[2].BeginPosition.X, listOfLinks[2].BeginPosition.Y,
+                                                    listOfLinks[2].EndPosition.X, listOfLinks[2].EndPosition.Y);
+                    if(ka)
+                    {
+                        MessageBox.Show("Test");
+                    }
+                }
                 for (int xLink_i = 0; xLink_i < listOfLinks.Count; xLink_i++)
                 {
                     
@@ -168,25 +231,26 @@ namespace Robot_Manipulator
             return result;
         }
 
-        public List<Polyline> GetRectangleZonesOfElements(List<Link> listOfLinks)
+        public List<Link> GetRectangleZonesOfElements(List<Link> listOfLinks)
         {
-            List<Polyline> resultList = new List<Polyline>();
+            List<Link> resultList = new List<Link>();
 
             foreach (var link in listOfLinks)
             {
                 Point point0 = link.BeginPosition;
-                Point point1 = new Point(link.EndPosition.X, link.BeginPosition.Y);
-                Point point2 = link.EndPosition;
-                Point point3 = new Point(link.BeginPosition.X, link.EndPosition.Y);
-
-                Point[] pointArray = { point0, point1, point2, point3 };
-                System.Windows.Media.PointCollection areasPoints = new PointCollection(pointArray);
+                Point point1 = link.EndPosition;
 
 
-                Polyline rectangle = new Polyline();
-                rectangle.Points = areasPoints;
+                Link line = new Link()
+                {
+                    BeginPosition = link.BeginPosition,
+                    EndPosition = link.EndPosition
+                };
 
-                resultList.Add(rectangle);
+                line.StrokeThickness = 10;
+                line.Stroke = System.Windows.Media.Brushes.Blue;
+
+                resultList.Add(line);
             }
             return resultList;
         }

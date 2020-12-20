@@ -144,7 +144,7 @@ namespace Robot_Manipulator
 
                 manipulator.CenterFirstElement(new Point(beginX, beginY));
 
-                //manipulator.GetLinksFromElements();
+                manipulator.IsThereAnyIntersections();
 
                 if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight * ManipulatorElement.scaleCoefficient, canvasMain.ActualWidth * ManipulatorElement.scaleCoefficient))
                 {
