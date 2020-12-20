@@ -127,16 +127,33 @@ namespace Robot_Manipulator
         {
             bool result = false;
 
-            double costilPrecision = 0.01;
+            
+            double costilPrecision = 1;
             for (int i = 0; i < listOfLinks.Count; i++)
             {
-                if (true)
-                {
-                    listOfLinks[i].BeginPosition = new Point(listOfLinks[i].BeginPosition.X + costilPrecision, listOfLinks[i].BeginPosition.Y + costilPrecision);
-                    listOfLinks[i].EndPosition = new Point(listOfLinks[i].EndPosition.X - costilPrecision, listOfLinks[i].EndPosition.Y - costilPrecision);
-                }
+               
+                Point beginPosition = new Point(listOfLinks[i].BeginPosition.X, listOfLinks[i].BeginPosition.Y);
+                Point endPosition = new Point(listOfLinks[i].EndPosition.X, listOfLinks[i].EndPosition.Y);
 
+                double newXBegin = beginPosition.X + Math.Cos(-listOfLinks[i].Angle) * costilPrecision + costilPrecision/25;
+                double newYBegin = beginPosition.Y + Math.Sin(-listOfLinks[i].Angle) * costilPrecision;
+
+                double newXEnd = endPosition.X - Math.Cos(-listOfLinks[i].Angle) * costilPrecision;
+                double newYEnd = endPosition.Y - Math.Sin(-listOfLinks[i].Angle) * costilPrecision;
+             
+
+                listOfLinks[i].BeginPosition = new Point(newXBegin, newYBegin);
+                listOfLinks[i].EndPosition = new Point(newXEnd, newYEnd);
             }
+
+            List<Point> points = new List<Point>();
+
+            foreach (var item in listOfLinks)
+            {
+                points.Add(item.BeginPosition);
+                points.Add(item.EndPosition);
+            }
+
             return result;
         }
 
@@ -154,7 +171,7 @@ namespace Robot_Manipulator
                 {
                     for (int j = i + 1; j < listOfLinks.Count; j++)
                     {
-                        if (IntersectDetecor.IsIntersected(listOfLinks[i], listOfLinks[j]))
+                        if (IntersectDetecor.IsIntersected(listOfLinks[j], listOfLinks[i]))
                             return true;
                     }
 

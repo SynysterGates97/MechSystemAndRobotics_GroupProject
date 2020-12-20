@@ -142,14 +142,12 @@ namespace Robot_Manipulator
                 double beginX = canvasMain.ActualWidth / 2 * ManipulatorElement.scaleCoefficient;
                 double beginY = canvasMain.ActualHeight / 2 * ManipulatorElement.scaleCoefficient;
 
-                manipulator.CenterFirstElement(new Point(beginX, beginY));
-
                 if (manipulator.IsThereAnyIntersections())
                 {
                     foreach (var element in manipulator.elements)
                     {
                         element.Stroke = System.Windows.Media.Brushes.Red;
-                    }                
+                    }
                 }
                 else
                 {
@@ -159,6 +157,9 @@ namespace Robot_Manipulator
                     }
                 }
 
+                manipulator.CenterFirstElement(new Point(beginX, beginY));
+
+                
                 if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight * ManipulatorElement.scaleCoefficient, canvasMain.ActualWidth * ManipulatorElement.scaleCoefficient))
                 {
                     if (selectedItemExist)
