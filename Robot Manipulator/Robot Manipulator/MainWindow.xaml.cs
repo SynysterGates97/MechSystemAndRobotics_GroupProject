@@ -144,7 +144,20 @@ namespace Robot_Manipulator
 
                 manipulator.CenterFirstElement(new Point(beginX, beginY));
 
-                manipulator.IsThereAnyIntersections();
+                if (manipulator.IsThereAnyIntersections())
+                {
+                    foreach (var element in manipulator.elements)
+                    {
+                        element.Stroke = System.Windows.Media.Brushes.Red;
+                    }                
+                }
+                else
+                {
+                    foreach (var element in manipulator.elements)
+                    {
+                        element.Stroke = System.Windows.Media.Brushes.Blue;
+                    }
+                }
 
                 if (manipulator.IsShapesOutOfCanvas(canvasMain.ActualHeight * ManipulatorElement.scaleCoefficient, canvasMain.ActualWidth * ManipulatorElement.scaleCoefficient))
                 {

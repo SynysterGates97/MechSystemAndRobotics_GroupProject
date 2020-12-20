@@ -104,22 +104,6 @@ namespace Robot_Manipulator
             }
         }
 
-        private bool IsTwoFiguresInterconnected(Geometry g1, Geometry g2)
-        {
-            Geometry og1 = g1.GetWidenedPathGeometry(new Pen(Brushes.Black, 1.0));
-            Geometry og2 = g2.GetWidenedPathGeometry(new Pen(Brushes.Black, 1.0));
-            CombinedGeometry cg = new CombinedGeometry(GeometryCombineMode.Intersect, og1, og2);
-            PathGeometry pg = cg.GetFlattenedPathGeometry();
-            Point[] interconnPoints = new Point[pg.Figures.Count];
-
-            for (int i = 0; i < pg.Figures.Count; i++)
-            {
-                Rect fig = new PathGeometry(new PathFigure[] { pg.Figures[i] }).Bounds;
-                interconnPoints[i] = new Point(fig.Left + fig.Width / 2.0, fig.Top + fig.Height / 2.0);
-            }
-            return interconnPoints.Count() > 0;
-        }
-
         public bool GetLinksFromElements(ref List<Link> listOfLinks)
         {
             bool result = false;
@@ -127,55 +111,58 @@ namespace Robot_Manipulator
             {
                 if (element.ElementType == ManipulatorElement.elementTypes.LINK)
                 {
-                    listOfLinks.Add((Link)element);
+                    Link newLink = new Link()
+                    {
+                        BeginPosition = ((Link)element).BeginPosition,
+                        EndPosition = ((Link)element).EndPosition
+                    };
+                    listOfLinks.Add(newLink);
                     result = true;
                 }
             }
             return result;
         }
 
-        public bool IsThereAnyIntersections()
+        public bool PrepairLinksList(ref List<Link> listOfLinks)
         {
             bool result = false;
+
+            double costilPrecision = 0.01;
+            for (int i = 0; i < listOfLinks.Count; i++)
+            {
+                if (true)
+                {
+                    listOfLinks[i].BeginPosition = new Point(listOfLinks[i].BeginPosition.X + costilPrecision, listOfLinks[i].BeginPosition.Y + costilPrecision);
+                    listOfLinks[i].EndPosition = new Point(listOfLinks[i].EndPosition.X - costilPrecision, listOfLinks[i].EndPosition.Y - costilPrecision);
+                }
+
+            }
+            return result;
+        }
+
+
+        public bool IsThereAnyIntersections()
+        {
 
             List<Link> listOfLinks = new List<Link>();
 
             if (GetLinksFromElements(ref listOfLinks))
             {
-                List<Link> listOfRectZones = new List<Link>();
-                listOfRectZones = GetRectangleZonesOfElements(listOfLinks);
+                PrepairLinksList(ref listOfLinks);
 
-                if (listOfRectZones.Count == 3)
+                for (int i = 0; i < listOfLinks.Count; i++)
                 {
-                    bool ka = IntersectDetecor.IsIntersected(listOfLinks[0], listOfLinks[2]);
-
-                    //bool ka = get_line_intersection_2(listOfLinks[0].BeginPosition.X, listOfLinks[0].BeginPosition.Y, 
-                    //                                listOfLinks[0].EndPosition.X, listOfLinks[0].EndPosition.Y,
-                    //                                listOfLinks[2].BeginPosition.X, listOfLinks[2].BeginPosition.Y,
-                    //                                listOfLinks[2].EndPosition.X, listOfLinks[2].EndPosition.Y);
-                    if(ka)
+                    for (int j = i + 1; j < listOfLinks.Count; j++)
                     {
-                        MessageBox.Show("Test");
+                        if (IntersectDetecor.IsIntersected(listOfLinks[i], listOfLinks[j]))
+                            return true;
                     }
+
                 }
-                for (int xLink_i = 0; xLink_i < listOfLinks.Count; xLink_i++)
-                {
-                    
 
-                    //const double precision = 0.1;
-                    //for (double x_i = listOfLinks[xLink_i].BeginPosition.X; x_i <= listOfLinks[xLink_i].EndPosition.X; x_i += precision)
-                    //{
 
-                    //    for (double y_i = listOfLinks[xLink_i].BeginPosition.Y; y_i <= listOfLinks[xLink_i].EndPosition.Y; y_i += precision)
-                    //    {
-                    //        for (int yLink_i = 0; yLink_i < listOfLinks.Count; yLink_i++)
-                    //        {
-
-                    //        }
-                    //    }
-                }
             }
-            return result;
+            return false;
         }
 
         public List<Link> GetRectangleZonesOfElements(List<Link> listOfLinks)
