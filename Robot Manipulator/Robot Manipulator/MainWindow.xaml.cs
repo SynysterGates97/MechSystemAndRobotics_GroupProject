@@ -337,5 +337,13 @@ namespace Robot_Manipulator
             MessageBox.Show(json);
 
         }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            /*
+            Person restoredPerson = JsonSerializer.Deserialize<Person>(json);
+            Console.WriteLine(restoredPerson.Name);
+            */
+        }
     }
 }
