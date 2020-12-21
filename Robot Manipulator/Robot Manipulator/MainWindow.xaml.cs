@@ -17,6 +17,8 @@ using System.Windows.Threading;
 using System.Text.Json;
 
 using Robot_Manipulator.JSON;
+using Microsoft.Win32;
+using System.IO;
 
 namespace Robot_Manipulator
 {
@@ -314,10 +316,10 @@ namespace Robot_Manipulator
 
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
-            //for (int i = 0; i < manipulator.elements.Count(); i++)
-            //{
 
-            //}
+            
+            ////////////////////////////////////////////////
+            ///
             ManipulatorSerialized manipulatorSerialized = new ManipulatorSerialized();
 
             foreach (var item in manipulator.elements)
@@ -334,10 +336,61 @@ namespace Robot_Manipulator
 
             }
 
-            string json = JsonSerializer.Serialize<ManipulatorSerialized>(manipulatorSerialized);
+            string bufToJsonFile= JsonSerializer.Serialize<ManipulatorSerialized>(manipulatorSerialized);
             //JsonSerializer.WriteWhitespace(Environment.NewLine);
-            MessageBox.Show(json);
 
+            if (bufToJsonFile.Length != 0)
+            {
+                SaveFileDialog sf = new SaveFileDialog();
+                sf.Filter = "Json files (*.json)|*.json";
+                sf.FilterIndex = 2;
+                sf.RestoreDirectory = true;
+                sf.ShowDialog();
+
+                if (sf.FileName != "")
+                {
+                    string kBasePath = sf.FileName;
+                    File.WriteAllText(kBasePath, bufToJsonFile);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Что-то пошло не так");
+            }
+
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Manipulator (*.json)|*.json|All files (*.*)|*.*";
+            openFileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            openFileDialog.ShowDialog();
+
+            if (openFileDialog.FileName != "")
+            {
+
+                var sr = new StreamReader(openFileDialog.FileName);
+
+                var json = sr.ReadToEnd();
+
+                ManipulatorSerialized manipulatorSerialized = JsonSerializer.Deserialize<ManipulatorSerialized>(json);
+
+
+                if (manipulatorSerialized.elements.Count() != 0)
+                {
+                    manipulator.LoadManipulatorFromJson(manipulatorSerialized);
+                }
+                else
+                {
+                    MessageBox.Show("Структура данных в json неподходящая");
+                }
+
+                sr.Close();
+
+
+            }           
         }
     }
 }

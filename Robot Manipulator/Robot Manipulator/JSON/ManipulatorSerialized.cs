@@ -14,6 +14,10 @@ namespace Robot_Manipulator.JSON
             {
                 return elements;
             }
+            set
+            {
+                elements = value;
+            }
         }
         public ManipulatorSerialized()
         {
