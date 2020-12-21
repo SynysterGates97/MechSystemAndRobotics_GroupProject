@@ -314,10 +314,10 @@ namespace Robot_Manipulator
 
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
-            //for (int i = 0; i < manipulator.elements.Count(); i++)
-            //{
 
-            //}
+            
+            ////////////////////////////////////////////////
+            ///
             ManipulatorSerialized manipulatorSerialized = new ManipulatorSerialized();
 
             foreach (var item in manipulator.elements)
@@ -334,9 +334,27 @@ namespace Robot_Manipulator
 
             }
 
-            string json = JsonSerializer.Serialize<ManipulatorSerialized>(manipulatorSerialized);
+            string bufToJsonFile= JsonSerializer.Serialize<ManipulatorSerialized>(manipulatorSerialized);
             //JsonSerializer.WriteWhitespace(Environment.NewLine);
-            MessageBox.Show(json);
+
+            if (bufToJsonFile.Length != 0)
+            {
+                SaveFileDialog sf = new SaveFileDialog();
+                sf.Filter = "Json files (*.json)|*.json";
+                sf.FilterIndex = 2;
+                sf.RestoreDirectory = true;
+                sf.ShowDialog();
+
+                if (sf.FileName != "")
+                {
+                    string kBasePath = sf.FileName;
+                    File.WriteAllText(kBasePath, bufToJsonFile);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Что-то пошло не так");
+            }
 
         }
 
