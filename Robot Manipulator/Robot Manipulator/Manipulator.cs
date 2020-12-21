@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Shapes;
 using System.Windows.Media;
+using Robot_Manipulator.JSON;
 
 namespace Robot_Manipulator
 {
@@ -265,6 +266,38 @@ namespace Robot_Manipulator
             elements.Add(firstJoint);
 
             OnPropertyChanged("Manipulator");
+        }
+
+        public void LoadManipulatorFromJson(ManipulatorSerialized serializedManipulator)
+        {
+            elements.Clear();
+
+            foreach (var element in serializedManipulator.elements)
+            {
+                if(element.ElementType == ManipulatorElement.elementTypes.JOINT)
+                {
+                    Joint joint = new Joint()
+                    {
+                        BeginPosition = element.BeginPosition,
+                        Weight = element.Weight
+                    };
+
+                    elements.Add(joint);
+                }
+                else if(element.ElementType == ManipulatorElement.elementTypes.LINK)
+                {
+                    Link link = new Link()
+                    {
+                        BeginPosition = element.BeginPosition,
+                        EndPosition = element.EndPosition,
+                        Weight = element.Weight
+                    };
+
+                    elements.Add(link);
+                }
+            }
+
+            OnPropertyChanged("LoadManipulatorFromJson");
         }
 
         public void AddElement()

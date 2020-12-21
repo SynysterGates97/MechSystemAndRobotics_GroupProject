@@ -16,7 +16,7 @@ namespace Robot_Manipulator.JSON
 		public Point EndPosition { get; set; }
 
 		[JsonPropertyName("Weigth")]
-		public double Weight { get; set; }
+		public float Weight { get; set; }
 
 		[JsonPropertyName("Type")]
 		public ManipulatorElement.elementTypes ElementType { get; set; }
