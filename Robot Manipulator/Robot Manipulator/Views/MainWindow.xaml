@@ -23,8 +23,8 @@
             </Grid.RowDefinitions>
             <TextBox x:Name="textBoxTestAngle" HorizontalAlignment="Left" Margin="10,77,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
             <TextBox x:Name="textBoxTestLength" HorizontalAlignment="Left" Margin="10,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
-            <Button x:Name="buttonAddLink" Content="Add new element" Margin="10,270,10,0" VerticalAlignment="Top" Click="buttonAddLink_Click" Height="28"/>
-            <Button x:Name="buttonDeleteLink" Content="Delete selected element" Margin="10,315,10,0" VerticalAlignment="Top" Click="buttonDeleteLink_Click" Height="29"/>
+            <Button x:Name="buttonAddLink" Content="Добавить новый элемент" Margin="10,270,10,0" VerticalAlignment="Top" Click="buttonAddLink_Click" Height="28"/>
+            <Button x:Name="buttonDeleteLink" Content="Удалить выбранный элемент" Margin="10,315,10,0" VerticalAlignment="Top" Click="buttonDeleteLink_Click" Height="29"/>
             <TextBox x:Name="textBoxInternalX" HorizontalAlignment="Left" Margin="10,123,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
             <TextBox x:Name="textBoxInternalY" HorizontalAlignment="Left" Margin="10,146,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
             <Label x:Name="label" Content="Angel&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,77,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
@@ -33,12 +33,10 @@
             <Label x:Name="label_Copy2" Content="Yint&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,146,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
             <TextBox x:Name="textBoxWeight" HorizontalAlignment="Left" Margin="10,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="16"/>
             <Label x:Name="label_Copy3" Content="Weight&#xA;" HorizontalAlignment="Left" Margin="57,169,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
-            <TextBox x:Name="textBoxCenterOfMassX" HorizontalAlignment="Left" Margin="10,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="16"/>
-            <TextBox x:Name="textBoxCenterOfMassY" HorizontalAlignment="Left" Margin="10,211,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="16"/>
-            <Label x:Name="label_Copy4" Content="CentOfMassX&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,190,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
-            <Label x:Name="label_Copy5" Content="CentOfMassY&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,210,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
-            <Button x:Name="buttonSave" Content="Save" HorizontalAlignment="Left" Margin="10,359,0,0" VerticalAlignment="Top" Click="buttonSave_Click"/>
-            <Button x:Name="button" Content="Load" HorizontalAlignment="Left" Margin="48,359,0,0" VerticalAlignment="Top" Click="button_Click"/>
+            <TextBox x:Name="textBoxCenterOfMassX" HorizontalAlignment="Left" Margin="10,210,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="16" IsEnabled="False"/>
+            <TextBox x:Name="textBoxCenterOfMassY" HorizontalAlignment="Left" Margin="10,232,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="16" IsEnabled="False"/>
+            <Label x:Name="label_Copy4" Content="CentOfMassX&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,210,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
+            <Label x:Name="label_Copy5" Content="CentOfMassY&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,232,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0" RenderTransformOrigin="0.457,2.278"/>
         </Grid>
         <Canvas  x:Name="canvasMain"  Margin="3,5,10,10" Background="LightGray"
                  MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown_BeginLinkManipulation" 
@@ -60,13 +58,8 @@
         </ItemsControl>
         <Menu x:Name="menu" Margin="3,10,10,10" Grid.ColumnSpan="2" Grid.Column="1">
             <MenuItem Header="File">
-                <MenuItem Header="New Project" ></MenuItem>
-                <MenuItem Header="Open Project" >
-                    <MenuItem Header="WinForms"></MenuItem>
-                    <MenuItem Header="WPF" ></MenuItem>
-                </MenuItem>
-                <Separator />
-                <MenuItem Header="Exit" ></MenuItem>
+                <MenuItem Header="Сохранить манипулятор" Click="MenuItemSave_Click" ></MenuItem>
+                <MenuItem Header="Загрузить Манипулятор" Click="MenuItemLoad_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="Edit" ></MenuItem>
             <MenuItem Header="View" Height="29" Width="44" ></MenuItem>

@@ -317,6 +317,17 @@ namespace Robot_Manipulator
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
 
+            
+
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void MenuItemSave_Click(object sender, RoutedEventArgs e)
+        {
             ManipulatorSerialized manipulatorSerialized = new ManipulatorSerialized();
 
             foreach (var item in manipulator.elements)
@@ -328,15 +339,15 @@ namespace Robot_Manipulator
                 {
                     ElementSerialized linkSerialized = new ElementSerialized((Link)item);
 
-                   
+
                 }
 
             }
 
-            if(manipulator.IsThereAnyIntersections())
-                MessageBox.Show("В манипуляторе есть пересечения пересечения");
+            if (manipulator.IsThereAnyIntersections())
+                MessageBox.Show("В манипуляторе есть пересечения");
 
-            string bufToJsonFile= JsonSerializer.Serialize<ManipulatorSerialized>(manipulatorSerialized);
+            string bufToJsonFile = JsonSerializer.Serialize<ManipulatorSerialized>(manipulatorSerialized);
             //JsonSerializer.WriteWhitespace(Environment.NewLine);
 
             if (bufToJsonFile.Length != 0)
@@ -357,10 +368,9 @@ namespace Robot_Manipulator
             {
                 MessageBox.Show("Что-то пошло не так");
             }
-
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void MenuItemLoad_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Manipulator (*.json)|*.json|All files (*.*)|*.*";
@@ -390,7 +400,7 @@ namespace Robot_Manipulator
                 sr.Close();
 
 
-            }           
+            }
         }
     }
 }
