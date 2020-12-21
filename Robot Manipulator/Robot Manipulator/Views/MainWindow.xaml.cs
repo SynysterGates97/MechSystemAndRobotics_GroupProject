@@ -317,9 +317,6 @@ namespace Robot_Manipulator
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
 
-            
-            ////////////////////////////////////////////////
-            ///
             ManipulatorSerialized manipulatorSerialized = new ManipulatorSerialized();
 
             foreach (var item in manipulator.elements)
@@ -335,6 +332,9 @@ namespace Robot_Manipulator
                 }
 
             }
+
+            if(manipulator.IsThereAnyIntersections())
+                MessageBox.Show("В манипуляторе есть пересечения пересечения");
 
             string bufToJsonFile= JsonSerializer.Serialize<ManipulatorSerialized>(manipulatorSerialized);
             //JsonSerializer.WriteWhitespace(Environment.NewLine);
