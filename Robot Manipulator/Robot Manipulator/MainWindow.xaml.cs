@@ -316,20 +316,26 @@ namespace Robot_Manipulator
             //{
 
             //}
+            ManipulatorSerialized manipulatorSerialized = new ManipulatorSerialized();
 
-                foreach (var item in manipulator.elements)
+            foreach (var item in manipulator.elements)
+            {
+                ElementSerialized elementSerialized = new ElementSerialized(item);
+
+                manipulatorSerialized.elements.Add(elementSerialized);
+                if (item.ElementType == ManipulatorElement.elementTypes.LINK)
                 {
-                    if(item.ElementType == ManipulatorElement.elementTypes.LINK)
-                    {
-                        LinkSerialized linkSerialized = new LinkSerialized((Link)item);
+                    ElementSerialized linkSerialized = new ElementSerialized((Link)item);
 
-                        string json = JsonSerializer.Serialize<LinkSerialized>(linkSerialized);
-                        //JsonSerializer.WriteWhitespace(Environment.NewLine);
-                        MessageBox.Show(json);
-                    }
-
+                   
                 }
-            
+
+            }
+
+            string json = JsonSerializer.Serialize<ManipulatorSerialized>(manipulatorSerialized);
+            //JsonSerializer.WriteWhitespace(Environment.NewLine);
+            MessageBox.Show(json);
+
         }
     }
 }
