@@ -301,7 +301,9 @@ namespace Robot_Manipulator
 
         private void buttonDeleteLink_Click(object sender, RoutedEventArgs e)
         {
-            manipulator.DeleteLastElement();
+            bool result = manipulator.DeleteSelectedItem();
+            if (!result)
+                MessageBox.Show("Что-то пошло не так, обратите внимание, что нулевой элемент удалить нельзя.");
         }
 
 

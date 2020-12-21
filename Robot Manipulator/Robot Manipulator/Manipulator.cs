@@ -300,21 +300,28 @@ namespace Robot_Manipulator
             OnPropertyChanged("AddJoint");
         }
 
-        public bool DeleteLastElement()
+        public bool DeleteSelectedItem()
         {
-            //Нельзя удалить начальный элемент
-            if (elements.Count > 1)
+            bool result = false;
+            if (SelectedItem != null)
             {
-                ManipulatorElement lastElement = elements.Last();
-                
-                if(elements.Remove(lastElement))
+                int maxIndex = elements.IndexOf(SelectedItem);
+                if (maxIndex == 0)//запрет на удаление нулевого элемента
+                    return false;
+
+                for (int i = elements.Count() - 1; i >= maxIndex; i--)
                 {
-                    OnPropertyChanged("DeleteLink");
-                    return true;
+                    if (!elements.Remove(elements[i]))
+                        return false;
+                    else
+                        result = true;
                 }
             }
-            return false;
 
+            if (result == true)
+                OnPropertyChanged("DeleteSelectedItem");
+
+            return result;
         }
 
         //public void AlignFirstLink(Point newBegin)
