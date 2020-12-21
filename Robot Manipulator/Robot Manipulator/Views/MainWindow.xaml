@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Robot_Manipulator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="567" Width="800">
+        Title="RMS V1.0" Height="567" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50.005"/>
@@ -27,16 +27,16 @@
             <Button x:Name="buttonDeleteLink" Content="Удалить выбранный элемент" Margin="10,315,10,0" VerticalAlignment="Top" Click="buttonDeleteLink_Click" Height="29"/>
             <TextBox x:Name="textBoxInternalX" HorizontalAlignment="Left" Margin="10,123,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
             <TextBox x:Name="textBoxInternalY" HorizontalAlignment="Left" Margin="10,146,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
-            <Label x:Name="label" Content="Angel&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,77,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
-            <Label x:Name="label_Copy" Content="Length" HorizontalAlignment="Left" Margin="57,100,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
-            <Label x:Name="label_Copy1" Content="Xint&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,123,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
-            <Label x:Name="label_Copy2" Content="Yint&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,146,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
+            <Label x:Name="label" Content="Угол&#xA;" HorizontalAlignment="Left" Margin="57,77,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
+            <Label x:Name="label_Copy" Content="Длина" HorizontalAlignment="Left" Margin="57,100,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
+            <Label x:Name="label_Copy1" Content="Xвнут" HorizontalAlignment="Left" Margin="57,123,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
+            <Label x:Name="label_Copy2" Content="Yвнут&#xA;" HorizontalAlignment="Left" Margin="57,146,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
             <TextBox x:Name="textBoxWeight" HorizontalAlignment="Left" Margin="10,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="16"/>
-            <Label x:Name="label_Copy3" Content="Weight&#xA;" HorizontalAlignment="Left" Margin="57,169,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
+            <Label x:Name="label_Copy3" Content="Вес&#xA;" HorizontalAlignment="Left" Margin="57,169,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
             <TextBox x:Name="textBoxCenterOfMassX" HorizontalAlignment="Left" Margin="10,210,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="16" IsEnabled="False"/>
             <TextBox x:Name="textBoxCenterOfMassY" HorizontalAlignment="Left" Margin="10,232,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Height="16" IsEnabled="False"/>
-            <Label x:Name="label_Copy4" Content="CentOfMassX&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,210,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
-            <Label x:Name="label_Copy5" Content="CentOfMassY&#xD;&#xA;" HorizontalAlignment="Left" Margin="57,232,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0" RenderTransformOrigin="0.457,2.278"/>
+            <Label x:Name="label_Copy4" Content="Центр масс X&#xA;" HorizontalAlignment="Left" Margin="57,210,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0"/>
+            <Label x:Name="label_Copy5" Content="Центр масс Y&#xA;" HorizontalAlignment="Left" Margin="57,232,0,0" VerticalAlignment="Top" Height="18" Padding="0,0,0,0" RenderTransformOrigin="0.457,2.278"/>
         </Grid>
         <Canvas  x:Name="canvasMain"  Margin="3,5,10,10" Background="LightGray"
                  MouseLeftButtonDown="CanvasMain_MouseLeftButtonDown_BeginLinkManipulation" 
@@ -48,21 +48,19 @@
         </Canvas>
 
 
-
-        <ItemsControl ItemsSource="{Binding }" Grid.ColumnSpan="2">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
         <Menu x:Name="menu" Margin="3,10,10,10" Grid.ColumnSpan="2" Grid.Column="1">
-            <MenuItem Header="File">
+            <MenuItem Header="Файл">
                 <MenuItem Header="Сохранить манипулятор" Click="MenuItemSave_Click" ></MenuItem>
                 <MenuItem Header="Загрузить Манипулятор" Click="MenuItemLoad_Click"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Edit" ></MenuItem>
-            <MenuItem Header="View" Height="29" Width="44" ></MenuItem>
+            <MenuItem Header="Помощь" Height="29" Width="58" >
+                <MenuItem Header="Выводимые параметры" Click="MenuItemHelpValues_Click"></MenuItem>
+                <MenuItem Header="Изменение выделенного объекта" Click="MenuItemHelpSelectedItemChanging_Click"></MenuItem>
+                <MenuItem Header="Добавление/удаление элементов" Click="MenuItemHelpAddDelElement_Click"></MenuItem>
+                <MenuItem Header="Масштабирование/центрирование" Click="MenuItemHelpScaleCenter_Click"> </MenuItem>
+                <MenuItem Header="Сохранение/загрузка манипулятора" Click="MenuItemHelpFiles_Click"></MenuItem>
+                
+            </MenuItem>
         </Menu>
 
     </Grid>
