@@ -17,6 +17,8 @@ using System.Windows.Threading;
 using System.Text.Json;
 
 using Robot_Manipulator.JSON;
+using Microsoft.Win32;
+using System.IO;
 
 namespace Robot_Manipulator
 {
@@ -340,13 +342,35 @@ namespace Robot_Manipulator
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            //Понимаю. Но как подругому не знаю.
-            //С новым годом!
-            string fromJson = "{\"Manipulator\":[{\"Begin\":{\"X\":687.1,\"Y\":475.9975},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":687.1,\"Y\":475.9975},\"End\":{\"X\":687.1,\"Y\":375.9975},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":687.1,\"Y\":375.9975},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":687.1,\"Y\":375.9975},\"End\":{\"X\":465.1,\"Y\":375.9975},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":465.1,\"Y\":375.9975},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":465.1,\"Y\":375.9975},\"End\":{\"X\":578.5493278957615,\"Y\":310.4975},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":578.5493278957615,\"Y\":310.4975},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":578.5493278957615,\"Y\":310.4975},\"End\":{\"X\":500.20000000000005,\"Y\":308.9950000000004},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":500.20000000000005,\"Y\":308.9950000000004},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":500.20000000000005,\"Y\":308.9950000000004},\"End\":{\"X\":641.2,\"Y\":209.995},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":641.2,\"Y\":209.995},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":641.2,\"Y\":209.995},\"End\":{\"X\":555.2,\"Y\":215.99500000000015},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":555.2,\"Y\":215.99500000000015},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":555.2,\"Y\":215.99500000000015},\"End\":{\"X\":690.2,\"Y\":121.99500000000002},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":690.2,\"Y\":121.99500000000002},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":690.2,\"Y\":121.99500000000002},\"End\":{\"X\":867.2,\"Y\":209.995},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":867.2,\"Y\":209.995},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":867.2,\"Y\":209.995},\"End\":{\"X\":725.2,\"Y\":205.99500000000023},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":725.2,\"Y\":205.99500000000023},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":725.2,\"Y\":205.99500000000023},\"End\":{\"X\":893.2,\"Y\":319.995},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":893.2,\"Y\":319.995},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":893.2,\"Y\":319.995},\"End\":{\"X\":713.2,\"Y\":318.99499999999824},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":713.2,\"Y\":318.99499999999824},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":713.2,\"Y\":318.99499999999824},\"End\":{\"X\":905.2,\"Y\":376.995},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":905.2,\"Y\":376.995},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2},{\"Begin\":{\"X\":905.2,\"Y\":376.995},\"End\":{\"X\":705.2,\"Y\":375.99499999999966},\"Weigth\":20,\"Type\":1},{\"Begin\":{\"X\":705.2,\"Y\":375.99499999999966},\"End\":{\"X\":0,\"Y\":0},\"Weigth\":10,\"Type\":2}]}";
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Manipulator (*.json)|*.json|All files (*.*)|*.*";
+            openFileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-            ManipulatorSerialized manipulatorSerialized = JsonSerializer.Deserialize<ManipulatorSerialized>(fromJson);
+            openFileDialog.ShowDialog();
 
-            manipulator.LoadManipulatorFromJson(manipulatorSerialized);
+            if (openFileDialog.FileName != "")
+            {
+
+                var sr = new StreamReader(openFileDialog.FileName);
+
+                var json = sr.ReadToEnd();
+
+                ManipulatorSerialized manipulatorSerialized = JsonSerializer.Deserialize<ManipulatorSerialized>(json);
+
+
+                if (manipulatorSerialized.elements.Count() != 0)
+                {
+                    manipulator.LoadManipulatorFromJson(manipulatorSerialized);
+                }
+                else
+                {
+                    MessageBox.Show("Структура данных в json неподходящая");
+                }
+
+                sr.Close();
+
+
+            }           
         }
     }
 }
