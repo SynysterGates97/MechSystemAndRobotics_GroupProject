@@ -349,6 +349,7 @@ namespace Robot_Manipulator
                     else
                         result = true;
                 }
+                SelectedItem = null;
             }
 
             if (result == true)

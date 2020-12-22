@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <None Update="Elka.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
